@@ -8,13 +8,10 @@ import java.util.Scanner;
 
 public class CarRent {
 	
-	//private LinkedList<Account> accounts = new LinkedList<Account>();
-	private HashMap<Integer, Account> accounts = new HashMap<Integer, Account>();
-	//private LinkedList<InsurancePlan> insurancePlans = new LinkedList<InsurancePlan>();
-	//private LinkedList<Vehicle> vehicles = new LinkedList<Vehicle>();
-	final static String USERINFO = "userinfo.txt";
-	final static String OWNERINFO = "ownerinfo.txt";
-	final static String RENTERINFO = "renterinfo.txt";
+	private HashMap<Integer, Account> accounts = new HashMap<Integer, Account>(); // To track the list of accounts being used in the current session.
+	final static String USERINFO    = "userinfo.txt";
+	final static String OWNERINFO   = "ownerinfo.txt";
+	final static String RENTERINFO  = "renterinfo.txt";
 	final static String VEHICLEINFO = "vehicleinfo.txt";
 	
 	public void mainMenu() {
@@ -29,7 +26,6 @@ public class CarRent {
 			System.out.println("   5. Show Rentel History (Existing User Only)");
 			System.out.println("   6. Show Account Balance");
 			System.out.println("   7. Exit");
-			// add vehicle/ list vehicle
 			int selection;
 			if(input.hasNextInt()){ // check integer is entered
 				selection = input.nextInt();
@@ -59,7 +55,6 @@ public class CarRent {
 			else if (selection == 7) {
 				System.exit(0);
 			}
-			//input.close();
 		}
 		
 	}
@@ -74,7 +69,6 @@ public class CarRent {
 			if (account instanceof Owner) {
 				balance = ((Owner)account).getBalance();
 				System.out.println("Your current balance is: " + balance);
-				//return balance;
 			}
 			else if (account instanceof Renter) {
 				balance = ((Renter)account).getBalance();
@@ -150,9 +144,7 @@ public class CarRent {
 					done = true;
 				}
 			}
-			
 		}
-		//input.close();
 	}
 	
 	public void createAccountManually() {
@@ -191,8 +183,6 @@ public class CarRent {
 	public void addVehicleToAccount() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
 		boolean done = false;
-		//System.out.println("Owner Account Name (saperted by space):"); // may have introduced bug by moving this out of while.
-		//String ownerName = input.next();
 		
 		while (!done) {
 			System.out.println("Owner Account ID:");
@@ -224,7 +214,6 @@ public class CarRent {
 			} 
 			else if (insurancePlanType == 2) {
 				InsurancePlan insuranceplan = new StandardPlan();
-				//Vehicle v = new Vehicle(ownerName, make, year, model, insuranceplan, rent, zipCode);
 				Account account = accounts.get(ownerID);
 				if (account instanceof Owner) {
 						//System.out.println(account);
@@ -239,11 +228,8 @@ public class CarRent {
 			}
 			else if (insurancePlanType == 3) {
 				InsurancePlan insuranceplan = new PremiumPlan();
-				//insurancePlans.add(plan);
-				//Vehicle v = new Vehicle(ownerName, make, year, model, insuranceplan, rent, zipCode);
 				Account account = accounts.get(ownerID);
 				if (account instanceof Owner) {
-						//System.out.println(account);
 						Vehicle v = new Vehicle((Owner)account, make, year, model, insuranceplan, rent, zipCode);
 						((Owner)account).addVehicle(v);
 						System.out.println("A Vehicle has been added to your account.");
@@ -295,7 +281,6 @@ public class CarRent {
 	}
 	
 	public void rentVehicle() {
-		// Account.bookVehicle(vehicle2, ((Renter)account1).getId());
 		System.out.println("An Account ID is needed to book a vehicle.");
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
 		boolean done = false;
@@ -304,12 +289,11 @@ public class CarRent {
 			int id = input.nextInt();
 			Account renter = accounts.get(id);
 			if (renter != null) {
-					//Account.bookVehicle(vehicle2, ((Renter)account1).getId()); // need a list of vehicles to choose from
 				System.out.println("Enter the zipCode to Search vehicle:");
 				int zipCode = input.nextInt();
 				LinkedList<Vehicle> vehiclesByZip = Account.searchVehicle(zipCode); // get all vehicle in the user selected zip code
 				if (vehiclesByZip != null) {
-					for (Vehicle v: vehiclesByZip) {
+					for (Vehicle v: vehiclesByZip) {  // Display list of available vehicles in the user selected zip code
 						System.out.println("vehicle ID = " + v.getVehicleID() + ":" + v);
 					}
 					System.out.println("Choose a vehicle ID to Book: ");
@@ -325,12 +309,11 @@ public class CarRent {
 							String endDate = input.next();
 							try {
 								Account.newbooking(selectedVehicle, owner, renter, startDate, endDate);
-								//System.out.println("You Have booked the vehicle: " + selectedVehicle);
+								System.out.println("You Have booked the vehicle: " + selectedVehicle);
 								done = true;
 							} catch (IncorrectAccountException e) {
 								e.printStackTrace();
 							}
-							//Account.bookVehicle(selectedVehicle, renter); // changed parameter from account ID to Account
 						}
 					} if (selectedVehicle == null) {
 						System.out.println("Your entered vehicle ID is not in the list. Try Again.");
@@ -347,7 +330,6 @@ public class CarRent {
 	}
 	
 	public void rentHistory() {
-		// Account.bookVehicle(vehicle2, ((Renter)account1).getId());
 		System.out.println("An Account ID is needed to see the rent history.");
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
 		boolean done = false;
