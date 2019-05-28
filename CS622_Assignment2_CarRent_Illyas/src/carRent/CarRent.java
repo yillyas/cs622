@@ -40,9 +40,9 @@ public class CarRent {
 				continue;
 			}
 			if ( selection == 1 ){ 
-				selectAccountCreationMethod(); // create an new account
+				selectAccountCreationMethod(); // Add manually or load from file
 			} else if (selection == 2 ) { // list a vehicle for rent
-				addVehicleToAccountFromInputFile();
+				selectVehicleAdditionMethod(); 
 			} else if (selection == 3) { // List a vehicle
 				listForRent();
 			}else if (selection == 4) { // Book a vehicle
@@ -70,6 +70,24 @@ public class CarRent {
 				done = true;
 			}else if ( selection == 2 ){ 
 				createAccountManually();
+				done = true;
+			}else {
+				System.out.println("Please enter 1 or 2");
+			}
+		}
+	}
+	
+	public void selectVehicleAdditionMethod() {
+		Scanner input = new Scanner(System.in).useDelimiter("\\n");
+		boolean done = false;
+		while (!done) {
+			System.out.println("How to add Vehicle: 1. Automatically Load From File 2. Enter the details manually");
+			int selection = input.nextInt();
+			if ( selection == 1 ){ 
+				addVehicleToAccountFromInputFile();
+				done = true;
+			}else if ( selection == 2 ){ 
+				addVehicleToAccountManually();
 				done = true;
 			}else {
 				System.out.println("Please enter 1 or 2");
@@ -198,7 +216,7 @@ public class CarRent {
 		}
 	}
 	
-	public void addVehicleToAccount() {
+	public void addVehicleToAccountManually() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
 		boolean done = false;
 		
