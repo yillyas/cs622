@@ -40,7 +40,7 @@ public class CarRent {
 				continue;
 			}
 			if ( selection == 1 ){ 
-				selectAccountCreationMethod(); // create an new account
+				selectAccountCreationMethod(); // Add manually or load from file
 			} else if (selection == 2 ) { // list a vehicle for rent
 				addVehicleToAccountFromInputFile();
 			} else if (selection == 3) { // List a vehicle
