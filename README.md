@@ -1,0 +1,5 @@
+#Project Description
+	“CarRent” is a java application that lets the users to rent their vehicles while they are not using them. In order for user to list their cars they first need to create an Owner account for the application that gives them the ability to list their vehicles. After creating the owner account user can add vehicles to their account, however in order to list vehicle for rent the owner needs to select an insurance plan, application provides three types of insurance plans; Basic Plan, Standard Plan and Premium Plan which provide different type of coverage for vehicle and have different price range. Only a listed vehicle becomes visible to the other users of  “CarRent” and they can book the vehicle based on their preferred rent, make, model and area code. Application provides the options for the owners to perform add, remove and update operations for the vehicle. CarRent also charges rent to the renters and deposits money in the owner account if their vehicles were rented.
+
+#Instructions 
+     CarRent class is the entry point, run CarRent class to start the application.
