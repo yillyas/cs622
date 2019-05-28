@@ -40,7 +40,7 @@ public class CarRent {
 				continue;
 			}
 			if ( selection == 1 ){ 
-				createAccountFromInputFile(); // create an new account
+				selectAccountCreationMethod(); // create an new account
 			} else if (selection == 2 ) { // list a vehicle for rent
 				addVehicleToAccountFromInputFile();
 			} else if (selection == 3) { // List a vehicle
@@ -57,6 +57,24 @@ public class CarRent {
 			}
 		}
 		
+	}
+	
+	public void selectAccountCreationMethod() {
+		Scanner input = new Scanner(System.in).useDelimiter("\\n");
+		boolean done = false;
+		while (!done) {
+			System.out.println("Select Account Create Method: 1. Automatically Load From File 2. Enter the details manually");
+			int selection = input.nextInt();
+			if ( selection == 1 ){ 
+				createAccountFromInputFile();
+				done = true;
+			}else if ( selection == 2 ){ 
+				createAccountManually();
+				done = true;
+			}else {
+				System.out.println("Please enter 1 or 2");
+			}
+		}
 	}
 	
 	public double getAccountBalance() {
