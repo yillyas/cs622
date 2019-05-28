@@ -14,6 +14,11 @@ public class CarRent {
 	final static String RENTERINFO  = "renterinfo.txt";
 	final static String VEHICLEINFO = "vehicleinfo.txt";
 	
+	/*
+	 * Main menu for text user interface
+	 * Lets the user select different options and invokes the appropriate methods. 
+	 */
+	
 	public void mainMenu() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n"); // input scanner object with return key as delimiter.
 		System.out.println("Welcome to the Car Rent system Assignment 2");
@@ -59,6 +64,13 @@ public class CarRent {
 		
 	}
 	
+	/*
+	 * Sub menu for presenting options to user on account creation
+	 * User can choose either of the following option:
+	 * 	1. Automatically Load From File 
+	 * 	2. Enter the details manually
+	 * Based on user selection invokes createAccountFromInputFile() or createAccountManually()
+	 */
 	public void selectAccountCreationMethod() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
 		boolean done = false;
@@ -77,6 +89,13 @@ public class CarRent {
 		}
 	}
 	
+	/*
+	 * Sub menu for presenting option to user on how to add new vehicles to existing account
+	 * User can choose either of the following option:
+	 * 	1. Automatically Load From File 
+	 * 	2. Enter the details manually
+	 * Based on user selection invokes addVehicleToAccountFromInputFile() or addVehicleToAccountManually()
+	 */
 	public void selectVehicleAdditionMethod() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
 		boolean done = false;
@@ -95,6 +114,10 @@ public class CarRent {
 		}
 	}
 	
+	/*
+	 * Allow the user to check their current account balance.
+	 * A -ve balance indicates that the user owes money.
+	 */
 	public double getAccountBalance() {
 		double balance = 0;
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
@@ -102,21 +125,19 @@ public class CarRent {
 		int id = input.nextInt();
 		Account account = accounts.get(id);
 		if (account != null){
-			if (account instanceof Owner) {
-				balance = ((Owner)account).getBalance();
+				balance = account.getBalance(); 
 				System.out.println("Your current balance is: " + balance);
-			}
-			else if (account instanceof Renter) {
-				balance = ((Renter)account).getBalance();
-				System.out.println("Your current balance is: " + balance);
-			}
-		} 
+			} 
 		else {
 			System.out.println("The id: " + id + " doesnot exist.");
 		}
 		return balance;
 	}
 	
+	/*
+	 * Reads the text files ownerinfo.txt and ownerinfo.txt to create Owner and Renter accounts respectively.
+	 * The method throws FileNotFoundException exception if the above mentioned files are not found.
+	 */
 	public void createAccountFromInputFile() {
 		try {
 			FileReader userInfo = new FileReader(OWNERINFO); // create owner account
@@ -153,6 +174,12 @@ public class CarRent {
 		
 	}	
 	
+	/*
+	 * Allows the user with Valid Owner account ID to list their vehicle for rent.
+	 * User makes a selection from a list of vehicles liked to their account that are currently not listed.
+	 * User also selects the time period in days for how long they want to list the vehicle.
+	 * 
+	 */
 	public void listForRent() {  
 		System.out.println("An Owner Account ID is needed to List a vehicle for rent.");
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
@@ -174,15 +201,26 @@ public class CarRent {
 					int vehicleID = input.nextInt();
 					System.out.println("For How may days vehicle should be listed: (e.g: 3,4) ");
 					int days = input.nextInt();
-					Vehicle vehicle = ((Owner)account).getVehicleByID(vehicleID); // Null pointer exception if vehicle ID does not exist
-					((Owner)account).listVehicleforRent(vehicle, days);
-					System.out.println(vehicle);
-					done = true;
+					Vehicle vehicle = ((Owner)account).getVehicleByID(vehicleID); 
+					if (vehicle != null) {
+						((Owner)account).listVehicleforRent(vehicle, days);
+						System.out.println(vehicle);
+						done = true;
+					} 
+					else {
+						System.out.println("Your entered ID doesnot exist, please try again");
+					}
 				}
 			}
 		}
 	}
 	
+	/*
+	 * Creates user account by getting the information interactively from the user
+	 * User can create following two types of accounts:
+	 *  	  1- Owner Account
+	 *    2- Renter Account
+	 */
 	public void createAccountManually() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
 		boolean done = false;

@@ -85,4 +85,5 @@ public abstract class Account {
 	
 	public abstract LinkedList<Vehicle> getUserRentHistory();
 	public abstract void addRentalChangers(int bookingID, Double charges);
+	public abstract double getBalance();
 }
