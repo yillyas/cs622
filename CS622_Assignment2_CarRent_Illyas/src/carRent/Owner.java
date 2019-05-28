@@ -69,11 +69,13 @@ public class Owner extends Account {
 		}
 		vehiclesOwned.put(vehicle.getVehicleID(), vehicle);
 	}
+	
 	public LinkedList<Vehicle> getVehicle() { // get the vehicles owned by an account
 		LinkedList<Vehicle> vehicles =  new LinkedList<Vehicle>(vehiclesOwned.values());   
 		return vehicles;
 	}
 	
+	@Override
 	public void addRentalChangers(int bookingID, Double charges) {
 		if (this.balancePerBooking == null) { // initialize the HashMap if it's empty.
 			balancePerBooking = new HashMap<Integer,Double>();
@@ -93,6 +95,8 @@ public class Owner extends Account {
 	public Vehicle getVehicleByID(int id) {
 		return vehiclesOwned.get(id);
 	}
+	
+	@Override
 	public double getBalance() {
 		return totalBalance;
 	}

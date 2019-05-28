@@ -62,6 +62,7 @@ public class Renter extends Account {
 		this.zipCode = zipCode;
 	}
 	
+	@Override
 	public double getBalance() {
 		return totalBalance;
 	}
@@ -77,6 +78,7 @@ public class Renter extends Account {
 		vehiclesRented.add(vehicle);
 	}
 	
+	@Override
 	public void addRentalChangers(int bookingID, Double charges) {
 		if (this.balancePerBooking == null) { // initialize the HashMap if it's empty.
 			balancePerBooking = new HashMap<Integer,Double>();
