@@ -25,20 +25,23 @@ public abstract class Account {
 	 * 3- Invokes Booking.calculateCost to calculate the charges and add the to Owner and Renter accounts.
 	 * 4- Write the booking details to a file "bookingdetail.txt".
 	 * 5- Updates Owner and Renters rent history.
-	 * 
 	 */
 	
 	public static void newbooking (Vehicle vehicle, Account owner, Account renter, 
-										String startDate, String endDate) throws IncorrectAccountException {
+								String startDate, String endDate) throws IncorrectAccountException {
 		if ((owner instanceof Owner) && (renter instanceof Renter)) {
 			Booking booking = Booking.book(vehicle, owner, renter, startDate, endDate);
 			int zip = vehicle.getZipCode();
 			LinkedList<Vehicle> updateVehicleList = VehicleRepository.vehicleByZip.get(zip);  // vehicles currently listed in this zip code
 			updateVehicleList.remove(vehicle); 												// remove the booked vehicle from the list
 			VehicleRepository.vehicleByZip.put(zip, updateVehicleList); 						//update the old list in the map
-			String bookingDetail = " [  BookingID: " + booking.getBookingID()  + ", Owner: " + ((Owner)owner).getName() + ", Renter: " + ((Renter)renter).getName() +  
-					", noOfDays: " + booking.getNoDays() + ", InsurancePlan: " + booking.getVehicle().getInsurancePlan()
-					+ ", StartDate: " + booking.getStartDate()  + ", EndDate: " + booking.getEndDate() + " ]"; 
+			String bookingDetail = " [  BookingID: " + booking.getBookingID()  
+										+ ", Owner: " + ((Owner)owner).getName() 
+										+ ", Renter: " + ((Renter)renter).getName()  
+										+ ", noOfDays: " + booking.getNoDays() 
+										+ ", InsurancePlan: " + booking.getVehicle().getInsurancePlan()
+										+ ", StartDate: " + booking.getStartDate()  
+										+ ", EndDate: " + booking.getEndDate() + " ]"; 
 			Booking.calculateCost(booking);        			// calculate charges
 			appendToBookingDetail(bookingDetail); 			//  write to file
 			((Owner)owner).updateUserRentHistory(vehicle); 	// update user rent history

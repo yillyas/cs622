@@ -14,7 +14,7 @@ public class CarRent {
 	final static String RENTERINFO  = "renterinfo.txt";
 	final static String VEHICLEINFO = "vehicleinfo.txt";
 	
-	/*
+	/**
 	 * Main menu for text user interface
 	 * Lets the user select different options and invokes the appropriate methods. 
 	 */
@@ -64,7 +64,7 @@ public class CarRent {
 		
 	}
 	
-	/*
+	/**
 	 * Sub menu for presenting options to user on account creation
 	 * User can choose either of the following option:
 	 * 	1. Automatically Load From File 
@@ -89,7 +89,7 @@ public class CarRent {
 		}
 	}
 	
-	/*
+	/**
 	 * Sub menu for presenting option to user on how to add new vehicles to existing account
 	 * User can choose either of the following option:
 	 * 	1. Automatically Load From File 
@@ -114,7 +114,7 @@ public class CarRent {
 		}
 	}
 	
-	/*
+	/**
 	 * Allow the user to check their current account balance.
 	 * A -ve balance indicates that the user owes money.
 	 */
@@ -134,17 +134,24 @@ public class CarRent {
 		return balance;
 	}
 	
-	/*
+	/**
 	 * Reads the text files ownerinfo.txt and ownerinfo.txt to create Owner and Renter accounts respectively.
 	 * The method throws FileNotFoundException exception if the above mentioned files are not found.
+	 * Method reads the following parameter values from the text file:
+	 * @param name
+	 * @param state
+	 * @param city
+	 * @param zipcode
+	 * @param account
+	 * @param accountType
 	 */
 	public void createAccountFromInputFile() {
-		try {
-			FileReader userInfo = new FileReader(OWNERINFO); // create owner account
+		try { // create owner account
+			FileReader userInfo = new FileReader(OWNERINFO); // read the owner information
 			Scanner userInfoInput = new Scanner(userInfo);
-			while (userInfoInput.hasNextLine()) { // keep iterating until all the lines are read
-		        String name = userInfoInput.next();
-		        name += " " + userInfoInput.next();
+			while (userInfoInput.hasNextLine()) {            // keep iterating until all the lines are read
+		        String name = userInfoInput.next(); 
+		        name += " " + userInfoInput.next();   		// Concatenate first name and last name 
 		        String state = userInfoInput.next();
 		        String city = userInfoInput.next();
 		        String zipCode = userInfoInput.next();
@@ -155,12 +162,12 @@ public class CarRent {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		try {
-			FileReader userInfo = new FileReader(RENTERINFO); // create renter account
+		try { // create renter account
+			FileReader userInfo = new FileReader(RENTERINFO); // read the renter information
 			Scanner userInfoInput = new Scanner(userInfo);
-			while (userInfoInput.hasNextLine()) { // keep iterating until all the lines are read
+			while (userInfoInput.hasNextLine()) {     		// keep iterating until all the lines are read
 		        String name = userInfoInput.next();
-		        name += " " + userInfoInput.next();
+		        name += " " + userInfoInput.next();   		// Concatenate first name and last name 
 		        String state = userInfoInput.next();
 		        String city = userInfoInput.next();
 		        String zipCode = userInfoInput.next();
@@ -174,7 +181,7 @@ public class CarRent {
 		
 	}	
 	
-	/*
+	/**
 	 * Allows the user with Valid Owner account ID to list their vehicle for rent.
 	 * User makes a selection from a list of vehicles liked to their account that are currently not listed.
 	 * User also selects the time period in days for how long they want to list the vehicle.
@@ -215,7 +222,7 @@ public class CarRent {
 		}
 	}
 	
-	/*
+	/**
 	 * Creates user account by getting the information interactively from the user
 	 * User can create following two types of accounts:
 	 *  	  1- Owner Account
@@ -254,6 +261,18 @@ public class CarRent {
 		}
 	}
 	
+	/**
+	 * Allows the user with Valid Owner account ID to list their vehicle for rent.
+	 * Asks the user to provide following information interactively through command line:
+	 * @param ownerID
+	 * @param make
+	 * @param model
+	 * @param year
+	 * @param rent
+	 * @param zipCode
+	 * @param insurancePlanType
+	 * Method creates a vehicle object and it to owner account.
+	 */
 	public void addVehicleToAccountManually() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
 		boolean done = false;
@@ -319,10 +338,21 @@ public class CarRent {
 		}	
 	}
 
-	public Vehicle addVehicleToAccountFromInputFile() { // adds vehicle to owner account by reading the inputs from the file
+	/**
+	 * Add a Vehicle to Owner account ID so that they can list their vehicle for rent.
+	 * Method reads the following parameter values from vehicleInfo.txt file to create a Vehicle object.
+	 * @param ownerID
+	 * @param make
+	 * @param model
+	 * @param year
+	 * @param rent
+	 * @param zipCode
+	 * @param insurancePlanType
+	 */
+	public Vehicle addVehicleToAccountFromInputFile() { 
 		Vehicle v = null;
 		try {
-			FileReader vehicleInfo = new FileReader(VEHICLEINFO); // create owner account
+			FileReader vehicleInfo = new FileReader(VEHICLEINFO); // read the information about vehicle
 			Scanner vehicleInfoInput = new Scanner(vehicleInfo);
 			while (vehicleInfoInput.hasNextLine()) { // keep iterating until all the lines are read
 				String id = vehicleInfoInput.next();
@@ -335,7 +365,7 @@ public class CarRent {
 				String zipCode = vehicleInfoInput.next();
 				String insurance = vehicleInfoInput.next();
 				InsurancePlan insurancePlan;
-				if (insurance.equals("Basic")) {  // validate insurance paln info
+				if (insurance.equals("Basic")) {  // validate insurance plan info
 					insurancePlan = new BasicPlan();
 				} else if (insurance.equals("Standard")) {
 					insurancePlan = new StandardPlan();
@@ -353,7 +383,14 @@ public class CarRent {
 		}
 		return v;
 	}
-	
+
+	/**
+	 * Allows the users to book vehicle.
+	 * User provides the following information.
+	 *  1. User searches a vehicle in the desired zipcode.
+	 *  2. User selects a vehicle to book.
+	 *  3. Asks the user to provide start/end dates for the booking.
+	 */
 	public void rentVehicle() {
 		System.out.println("An Account ID is needed to book a vehicle.");
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
@@ -403,6 +440,12 @@ public class CarRent {
 		}
 	}
 	
+	/**
+	 * Allows the users to view their account history.
+	 *  Owner: can check to which renters they have rented the vehicles in the past
+	 *         or which vehicles gets rented the most
+	 *  Renter: can view their past trips.
+	 */
 	public void rentHistory() {
 		System.out.println("An Account ID is needed to see the rent history.");
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");

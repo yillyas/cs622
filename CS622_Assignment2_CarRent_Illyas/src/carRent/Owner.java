@@ -75,15 +75,6 @@ public class Owner extends Account {
 		return vehicles;
 	}
 	
-	@Override
-	public void addRentalChangers(int bookingID, Double charges) {
-		if (this.balancePerBooking == null) { // initialize the HashMap if it's empty.
-			balancePerBooking = new HashMap<Integer,Double>();
-		}
-		totalBalance += charges; // add the current rental charges to total balance
-		balancePerBooking.put(bookingID, charges);
-	}
-	
 	public double getRentalChangers(int bookingID) {
 		double charges = 0;
 		if (this.balancePerBooking == null) { 
@@ -96,15 +87,15 @@ public class Owner extends Account {
 		return vehiclesOwned.get(id);
 	}
 	
-	@Override
-	public double getBalance() {
-		return totalBalance;
-	}
 
 	public void setBalance(double balance) {
 		this.totalBalance = balance;
 	}
-
+	/**
+	 * @param vehicle
+	 * @param numberOfDays
+	 * Allows the user to list their vehicle for rent for selected time period.
+	 */
 	public void listVehicleforRent (Vehicle vehicle, int numberOfDays) {
 		if (!vehicle.isListed()) {
 			LocalDate startDate = LocalDate.now();
@@ -132,18 +123,27 @@ public class Owner extends Account {
 		}
 	}
 	
-	
-	public void updateUserRentHistory(Vehicle vehicle) { // user history: list of all the vehicles rented by the user
+	/**
+	 * @param vehicle
+	 * updates user rent history by adding the vehicle to a list of vehicles rented by user
+	 */
+	public void updateUserRentHistory(Vehicle vehicle) {
 		if (this.vehiclesRented == null) {
 			vehiclesRented = new LinkedList<Vehicle>(); 
 		}
 		vehiclesRented.add(vehicle);
 	}
 	
-	
 	@Override
-	public LinkedList<Vehicle> getUserRentHistory() { // return the list of vehicles rented by the user
-		
+	public double getBalance() {
+		return totalBalance;
+	}
+	/**
+	 * @return vehicles
+	 * returns the list of vehicles rented by the Owner
+	 */
+	@Override
+	public LinkedList<Vehicle> getUserRentHistory() { 
 		LinkedList<Vehicle> ownedVehicle = new LinkedList<Vehicle>(vehiclesOwned.values());
 		LinkedList<Vehicle> vehicle = new LinkedList<Vehicle>();
 		if (ownedVehicle != null) { // Vehicles rented to other users
@@ -160,7 +160,20 @@ public class Owner extends Account {
 		}
 		return vehicle;
 	}
-
+	/**
+	 * @param bookingID
+	 * @param charges
+	 * updated the total account balance and also added the booking ID and charges to user account.
+	 */
+	@Override
+	public void addRentalChangers(int bookingID, Double charges) {
+		if (this.balancePerBooking == null) { // initialize the HashMap if it's empty.
+			balancePerBooking = new HashMap<Integer,Double>();
+		}
+		totalBalance += charges; // add the current rental charges to total balance
+		balancePerBooking.put(bookingID, charges);
+	}
+	
 	@Override
 	public String toString() {
 		return "Owner [ID=" + ID + ", name=" + name + ", state=" + state + ", city=" + city + ", zipCode=" + zipCode
