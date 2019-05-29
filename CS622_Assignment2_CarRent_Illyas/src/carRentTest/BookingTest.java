@@ -56,5 +56,20 @@ class BookingTest {
         double[] balance = Booking.calculateCost(booking);
 		assertEquals(255.0,balance[0]);
 	}
+	
+	/**
+	 * Test method to check if the booking ID is auto incremented
+	 */
+	@Test
+	void testBookingID() {
+        Booking booking1 = booking;
+        owner = new Owner("Will", "MD", "ChevyChase", 20815);
+		renter = new Renter("Jane", "MD", "Rockville", 20851);
+		insurance = new BasicPlan();
+		vehicle = new Vehicle(owner, "Audi", 2015, "A4", insurance, 70, 20814);
+		owner.addVehicle(vehicle);
+        Booking booking2 = Booking.book(vehicle,owner,renter, startDate, endDate);
+		assertTrue(booking1.getBookingID() < booking2.getBookingID());
+	}
 
 }

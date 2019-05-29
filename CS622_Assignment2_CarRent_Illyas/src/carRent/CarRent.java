@@ -21,14 +21,14 @@ public class CarRent {
 	
 	public void mainMenu() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n"); // input scanner object with return key as delimiter.
-		System.out.println("Welcome to the Car Rent system Assignment 2");
+		System.out.println("Welcome to the Car Rent System");
 		while (true) {
 			System.out.println("Choose an option:"); 
 			System.out.println("   1. Create an Account");
 			System.out.println("   2. Add a Vehicle (Existing User Only)");
 			System.out.println("   3. List a Vehicle for Rent (Existing User Only)");
 			System.out.println("   4. Book a Vehicle (Existing User Only)");
-			System.out.println("   5. Show Rentel History (Existing User Only)");
+			System.out.println("   5. Show Rental History (Existing User Only)");
 			System.out.println("   6. Show Account Balance");
 			System.out.println("   7. Exit");
 			int selection;
@@ -125,8 +125,16 @@ public class CarRent {
 		int id = input.nextInt();
 		Account account = accounts.get(id);
 		if (account != null){
-				balance = account.getBalance(); 
-				System.out.println("Your current balance is: " + balance);
+			balance = account.getBalance();
+			if (account instanceof Owner) {
+				System.out.println("Thank you for being valued customer: " + ((Owner)account).getName());
+				System.out.println("$" + balance + " deposited to your account.");
+			    }
+			else {
+				balance = Math.abs(balance);
+				System.out.println("Thank you for being valued customer: " + ((Renter)account).getName());
+				System.out.println("$" + balance + " deducted from your account.");
+				}
 			} 
 		else {
 			System.out.println("The id: " + id + " doesnot exist.");

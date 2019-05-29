@@ -21,7 +21,7 @@ public class Booking {
 	
 	public Booking(Vehicle vehicle, Account owner, Account renter, String startDate, String endDate) {
 		super();
-		bookingNumber ++; // auto generate the booking IDs
+		Booking.bookingNumber++; // auto generate the booking IDs
 		this.bookingID = Booking.bookingNumber;
 		this.vehicle = vehicle;
 		this.owner = owner;
