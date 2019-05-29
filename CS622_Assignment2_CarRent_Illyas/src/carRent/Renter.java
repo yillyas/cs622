@@ -61,23 +61,35 @@ public class Renter extends Account {
 	public void setZipCode(int zipCode) {
 		this.zipCode = zipCode;
 	}
-	
-	@Override
-	public double getBalance() {
-		return totalBalance;
-	}
 
 	public void setBalance(double balance) {
 		this.totalBalance = balance;
 	}
 
-	public void updateUserRentHistory(Vehicle vehicle) { // user history: list of all the vehicles rented by the user
+	public double getRentalChangers(int bookingID) {
+		double charges = 0;
+		if (this.balancePerBooking == null) { 
+			charges = balancePerBooking.get(bookingID);	
+		}
+		return charges;
+	}
+	
+	/**
+	 * @param vehicle
+	 * updates user rent history by adding the vehicle to a list of vehicles rented by user
+	 */
+	public void updateUserRentHistory(Vehicle vehicle) { 
 		if (this.vehiclesRented == null) {
 			vehiclesRented = new LinkedList<Vehicle>(); 
 		}
 		vehiclesRented.add(vehicle);
 	}
 	
+	/**
+	 * @param bookingID
+	 * @param charges
+	 * updated the total account balance and also added the booking ID and charges to user account.
+	 */
 	@Override
 	public void addRentalChangers(int bookingID, Double charges) {
 		if (this.balancePerBooking == null) { // initialize the HashMap if it's empty.
@@ -87,16 +99,16 @@ public class Renter extends Account {
 		balancePerBooking.put(bookingID, charges);
 	}
 	
-	public double getRentalChangers(int bookingID) {
-		double charges = 0;
-		if (this.balancePerBooking == null) { 
-			charges = balancePerBooking.get(bookingID);	
-		}
-		return charges;
-	}
-	
 	@Override
-	public LinkedList<Vehicle> getUserRentHistory() { // return the list of vehicles rented by the user
+	public double getBalance() {
+		return totalBalance;
+	}
+	/**
+	 * @return vehicles
+	 * returns the list of vehicles rented by the renter
+	 */
+	@Override
+	public LinkedList<Vehicle> getUserRentHistory() {
 		return this.vehiclesRented;
 	}
 

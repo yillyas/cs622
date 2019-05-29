@@ -8,7 +8,6 @@ public class Vehicle {
 	private static int id = 0;
 	private int vehicleID;
 	private Owner owner;
-	//private int ownerID;
 	private String make;
 	private int year;
 	private String model;
@@ -21,8 +20,8 @@ public class Vehicle {
 	private int zipCode;
 	private LinkedList<Account> rentHistory = new LinkedList<Account>();
 	
-	public Vehicle(Owner owner, String make, int year, String model, InsurancePlan insurancePlan, int rent, 
-			 int zipCode) {
+	public Vehicle(Owner owner, String make, int year, String model, 
+						InsurancePlan insurancePlan, int rent, int zipCode) {
 		super();
 		this.owner = owner;
 		this.make = make;
@@ -134,9 +133,21 @@ public class Vehicle {
 	public LinkedList<Account> getRenters() {
 		return rentHistory;
 	}
+	/*
+	 * @param renter
+	 * Adds the renter to the vehicles rent history
+	 */
+	public void setRenters(Account renter) {
+		if (this.rentHistory == null) {
+			rentHistory = new LinkedList<Account>(); 
+		}
+		rentHistory.add(renter);
+	}
 	
-	public String printRenters() { // print selected information from renter account
-		//return rentHistory; 
+	/*
+	 * Helper method to print the rent history
+	 */
+	private String printRenters() {
 		String renters = "";
 		for (Account a : rentHistory) {
 			if (a instanceof Owner ) {
@@ -146,13 +157,6 @@ public class Vehicle {
 			}	
 		}
 		return renters;
-	}
-
-	public void setRenters(Account renter) {
-		if (this.rentHistory == null) {
-			rentHistory = new LinkedList<Account>(); 
-		}
-		rentHistory.add(renter);
 	}
 
 	@Override
