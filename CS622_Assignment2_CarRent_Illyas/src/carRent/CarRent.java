@@ -225,8 +225,16 @@ public class CarRent {
 	/**
 	 * Creates user account by getting the information interactively from the user
 	 * User can create following two types of accounts:
-	 *  	  1- Owner Account
-	 *    2- Renter Account
+	 *  	1- Owner Account
+	 *  2- Renter Account
+	 * User enters following information from command line:
+	 * @param name
+	 * @param state
+	 * @param city
+	 * @param zipcode
+	 * @param account
+	 * @param accountType
+	 * 
 	 */
 	public void createAccountManually() {
 		Scanner input = new Scanner(System.in).useDelimiter("\\n");
@@ -256,7 +264,6 @@ public class CarRent {
 				done = true;
 			} else {
 				System.out.println("Something went wrong, Try again.");
-				//continue;
 			}	
 		}
 	}

@@ -32,9 +32,9 @@ public abstract class Account {
 		if ((owner instanceof Owner) && (renter instanceof Renter)) {
 			Booking booking = Booking.book(vehicle, owner, renter, startDate, endDate);
 			int zip = vehicle.getZipCode();
-			LinkedList<Vehicle> updateVehicleList = VehicleRepository.vehicleByZip.get(zip);  // vehicles currently listed in this zip code
-			updateVehicleList.remove(vehicle); 												// remove the booked vehicle from the list
-			VehicleRepository.vehicleByZip.put(zip, updateVehicleList); 						//update the old list in the map
+			LinkedList<Vehicle> updateVehicleList = VehicleRepository.vehicleByZip.get(zip);  // vehicles currently listed in this zipcode
+			updateVehicleList.remove(vehicle); 			// remove the booked vehicle from the list
+			VehicleRepository.vehicleByZip.put(zip, updateVehicleList); 				//update the old list in the map
 			String bookingDetail = " [  BookingID: " + booking.getBookingID()  
 										+ ", Owner: " + ((Owner)owner).getName() 
 										+ ", Renter: " + ((Renter)renter).getName()  
@@ -54,20 +54,17 @@ public abstract class Account {
 	}
 	
 	/**
-	 * 
 	 * @param newBooking
-	 * 
 	 *  Helper method to write the booking details to a file.
 	 */
-	
-	private static void appendToBookingDetail(String newBooking) {
+	public static void appendToBookingDetail(String newBooking) {
 			
 			BufferedWriter bw = null;
 			try {
-				bw = new BufferedWriter(new FileWriter(BOOKINGDETAILS, true)); // (append flag)
-				bw.write(newBooking);  // C3
+				bw = new BufferedWriter(new FileWriter(BOOKINGDETAILS, true)); // (true = append flag)
+				bw.write(newBooking); 
 				System.out.println(newBooking + "<--written to bookingdetail");  
-				bw.newLine(); // C4
+				bw.newLine(); 
 				bw.flush();
 			} 
 			catch (IOException e) {
@@ -84,7 +81,6 @@ public abstract class Account {
 				}
 			} 
 		}
-	
 	
 	public abstract LinkedList<Vehicle> getUserRentHistory();
 	public abstract void addRentalChangers(int bookingID, Double charges);
