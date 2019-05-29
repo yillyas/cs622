@@ -1,3 +1,6 @@
 
  [  BookingID: 1, Owner: John Doe, Renter: Jane Doe, noOfDays: 5, InsurancePlan: BasicPlan [deductable=500, costPerTrip=25, policyNumber=1], StartDate: 05/25/2019, EndDate: 05/30/2019 ]
  [  BookingID: 1, Owner: John Doe, Renter: Jane Doe, noOfDays: 3, InsurancePlan: BasicPlan [deductable=500, costPerTrip=25, policyNumber=1], StartDate: 06/02/2019, EndDate: 06/05/2019 ]
+ [  BookingID: 1, Owner: John Doe, Renter: Jane Doe, noOfDays: 4, InsurancePlan: BasicPlan [deductable=500, costPerTrip=25, policyNumber=1], StartDate: 06/01/2019, EndDate: 06/05/2019 ]
+ [  BookingID: 1, Owner: John Doe, Renter: Jane Doe, noOfDays: 4, InsurancePlan: BasicPlan [deductable=500, costPerTrip=25, policyNumber=1], StartDate: 06/01/2019, EndDate: 06/05/2019 ]
+ [  BookingID: 1, Owner: John Doe, Renter: Jane Doe, noOfDays: 4, InsurancePlan: BasicPlan [deductable=500, costPerTrip=25, policyNumber=1], StartDate: 06/01/2019, EndDate: 06/05/2019 ]
