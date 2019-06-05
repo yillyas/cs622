@@ -82,15 +82,15 @@ public class CarRent {
 	 * Winner gets a monthly coupon, which is applied to the account balance.
 	 */
 	public <T extends Account> T userOftheMonth(Collection<? extends T> aAccount) { // cast the input to a collection
-		T currentWinnerAccout = Collections.max(aAccount);
+		T currentWinnerAccount = Collections.max(aAccount);
 		
-		System.out.println("User of the month is: " + currentWinnerAccout);
-		System.out.println("Current Balance: " + currentWinnerAccout.getBalance());
+		System.out.println("User of the month is: " + currentWinnerAccount);
+		System.out.println("Current Balance: " + currentWinnerAccount.getBalance());
 		System.out.println("A  coupon of value:  " + COUPON + " is deposited to your account.");
-		currentWinnerAccout.addBalanceFromCoupon(COUPON); // apply the coupon to winner balance
-		System.out.println("New Balance: " + currentWinnerAccout.getBalance());
+		currentWinnerAccount.addBalanceFromCoupon(COUPON); // apply the coupon to winner balance
+		System.out.println("New Balance: " + currentWinnerAccount.getBalance());
 		
-		return currentWinnerAccout;
+		return currentWinnerAccount;
 	}
 	
 	/**
