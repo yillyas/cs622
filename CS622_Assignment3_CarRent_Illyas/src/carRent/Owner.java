@@ -4,10 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
 
-
-public class Owner extends Account /* implements Comparable<Owner> */ {
+public class Owner extends Account {
 	private int ID;
 	private double totalBalance;
 	private String name;
@@ -15,9 +13,7 @@ public class Owner extends Account /* implements Comparable<Owner> */ {
 	private String city;
 	private int zipCode;
 	private HashMap<Integer, Vehicle> vehiclesOwned;
-	//private LinkedList<Vehicle> vehiclesRented;
 	private HashMap<Integer, Double> balancePerBooking; // <bookingID, changersPerbooking>
-	// Add set balance per booking ID
 	
 	public Owner(String name, String state, String city, int zipCode) {
 		super();
@@ -142,28 +138,6 @@ public class Owner extends Account /* implements Comparable<Owner> */ {
 		vehiclesRented.add(vehicle);
 	}
 	
-	
-	/*
-	public LinkedList<Vehicle> vehiclesRentedInPastMonth() {
-		LinkedList<Vehicle> pastMonthRentals = new LinkedList<>();
-		LocalDate currentDate = LocalDate.now();
-		LocalDate pastMonthDate = currentDate.minusMonths(1);
-		if (vehiclesRented != null) {
-			for (Vehicle v : vehiclesRented) {
-				Set<LocalDate> vehicleBookDates = v.getBookingHistory().keySet(); // all the dates that vehicle was booked on
-				for (LocalDate d : vehicleBookDates) {
-					if (d.isAfter(pastMonthDate) && d.isBefore(currentDate)) { // verify the booking date is between past 30 days
-						pastMonthRentals.add(v);
-					}
-				}
-			}
-			
-		}
-		return pastMonthRentals;
-	}
-	
-	*/
-	
 	@Override
 	public double getBalance() {
 		return totalBalance;
@@ -214,12 +188,4 @@ public class Owner extends Account /* implements Comparable<Owner> */ {
 	public double addBalanceFromCoupon(double voucher) {
 		return this.totalBalance += voucher; 
 	}
-
-	/*
-	@Override
-	public int compareTo(Account other) {
-		return Integer.compare(this.vehiclesRentedInPastMonth().size(), other.vehiclesRentedInPastMonth().size());
-	}
-	*/
-
 }

@@ -1,11 +1,9 @@
 package carRent;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
 
-public class Renter extends Account /*implements Comparable<Renter>*/ {
+public class Renter extends Account {
 	private int ID;
 	private double totalBalance;
 	private String name;
@@ -94,26 +92,6 @@ public class Renter extends Account /*implements Comparable<Renter>*/ {
 		vehiclesRented.add(vehicle);
 	}
 	
-	/*
-	public LinkedList<Vehicle> vehiclesRentedInPastMonth() {
-		LinkedList<Vehicle> pastMonthRentals = new LinkedList<>();
-		LocalDate currentDate = LocalDate.now();
-		LocalDate pastMonthDate = currentDate.minusMonths(1);
-		if (vehiclesRented != null) {
-			for (Vehicle v : vehiclesRented) {
-				Set<LocalDate> vehicleBookDates = v.getBookingHistory().keySet(); // all the dates that vehicle was booked on
-				for (LocalDate d : vehicleBookDates) {
-					if (d.isAfter(pastMonthDate) && d.isBefore(currentDate)) { // verify the booking date is between past 30 days
-						pastMonthRentals.add(v);
-					}
-				}
-			}
-			
-		}
-		return pastMonthRentals;
-	}
-	*/
-	
 	/**
 	 * @param bookingID
 	 * @param charges
@@ -152,11 +130,4 @@ public class Renter extends Account /*implements Comparable<Renter>*/ {
 		return this.totalBalance -= voucher; // the balance shows what user owes, so the coupon should reduce the balance in this case
 	}
 
-	/*
-	@Override
-	public int compareTo(Renter other) {
-		return Integer.compare(this.vehiclesRentedInPastMonth().size(), other.vehiclesRentedInPastMonth().size());
-	}		
-
-	*/
 }
