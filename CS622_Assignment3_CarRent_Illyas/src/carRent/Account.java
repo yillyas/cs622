@@ -17,6 +17,9 @@ public abstract class Account implements Comparable<Account> {
 	public static LinkedList<Vehicle> searchVehicle (int zipCode) {
 		return VehicleRepository.vehicleByZip.get(zipCode);
 	}
+	public LinkedList<Vehicle> getVehiclesRented() {
+		return vehiclesRented;
+	}
 	/**
 	 * @param vehicle
 	 * @param owner
@@ -104,27 +107,21 @@ public abstract class Account implements Comparable<Account> {
 	
 	public LinkedList<Vehicle> vehiclesRentedInPastMonth() {
 		LinkedList<Vehicle> pastMonthRentals = null;
-		int noOfVehicle = 0;
 		LocalDate currentDate = LocalDate.now();
 		LocalDate pastMonthDate = currentDate.minusMonths(1);
 		if (vehiclesRented != null) {
 			pastMonthRentals = new LinkedList<>();
 			for (Vehicle v : vehiclesRented) {
 				Set<String> vehicleBookDates = v.getBookingHistory().keySet(); // all the dates that vehicle was booked on
-				System.out.println("vehicleBookDates.size() :" + vehicleBookDates.size());
 				for (String d : vehicleBookDates) {
 					LocalDate date = LocalDate.parse(d,DateTimeFormatter.ofPattern("MM/dd/yyyy")); // convert string to date
 					if (date.isAfter(pastMonthDate) && date.isBefore(currentDate)) { // verify the booking date is between past 30 days
 						pastMonthRentals.add(v);
-						noOfVehicle ++;
-						System.out.println("Adding to past month rentals");
 					}
 				}
 			}
 			
 		}
-		System.out.println("vehiclesRentedInPastMonth() return:" + pastMonthRentals.size());
-		System.out.println("noOfVehicle" + noOfVehicle);
 		return pastMonthRentals;
 	}
 	
