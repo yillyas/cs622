@@ -3,7 +3,13 @@ package carRent;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class is used to book the vehicles and keep track of the bookings
@@ -86,25 +92,23 @@ public class Booking {
 	 */
 	public static Booking book(Vehicle vehicle, Account owner, Account renter, String startDate, String endDate) {
 		Booking bookingDetail = null;
-	//	LocalDate currentStratDate = LocalDate.parse(startDate,DateTimeFormatter.ofPattern("MM/dd/yyyy")); // convert string to date
-	//	LocalDate lastTripEndDate = vehicle.getEndDate();
-		//vehicle.getBookingHistory()
-		//if (currentStratDate.isAfter(lastTripEndDate)) {  // date.isAfter(pastMonthDate) && date.isBefore(currentDate)
-		if (!(vehicle.isBooked())) {
+		LocalDate currentTripStratDate = LocalDate.parse(startDate,DateTimeFormatter.ofPattern("MM/dd/yyyy")); // convert string to date
+		LocalDate currentTripEndDate = LocalDate.parse(endDate,DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+		
+		if ( vehicle.getCurrentBookingDates().isEmpty() || vehicle.getCurrentBookingDates().contains(currentTripStratDate)) { // vehicle is either never booked before (the null check),
+																															//or the selected date should not overlap with the currently booked dates.
 			vehicle.setBooked(true);
 			bookingDetail = new Booking(vehicle, owner, renter, startDate, endDate);
-			LocalDate bookingStartDate = LocalDate.parse(startDate,DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-			LocalDate bookingEndDate = LocalDate.parse(endDate,DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-			/*
-			vehicle.setStartDate(bookingStartDate); // updated the vehicles dates based on current booking
-			vehicle.setEndDate(bookingEndDate);
-			*/
-			
-			Period period = Period.between(bookingStartDate , bookingEndDate);
+			Period period = Period.between(currentTripStratDate , currentTripEndDate);
 			int days = period.getDays();
 			bookingDetail.setNoDays(days);
+			Set<LocalDate> rangeOfBookingDates = new HashSet<>(Stream.iterate(currentTripStratDate, d -> d.plusDays(1))
+					  										.limit(days + 1)
+					  										.collect(Collectors.toList()));
+			vehicle.setCurrentBookingDates(rangeOfBookingDates); 
+			
 		}else {
-			System.out.println("Vehicle is already booked between these dates, pleaase pick a different date.");
+			System.out.println("Vehicle is already booked between dates: " + vehicle.getCurrentBookingDates() + " please pick a different date.");
 		}
 		
 		return bookingDetail;
@@ -119,7 +123,6 @@ public class Booking {
 	 *  4. updates the owners account balance
 	 */
 	public HashMap<String, Double> calculateCost() { 
-		//double balance [] = new double[2];
 		HashMap<String,Double> balance = new HashMap<>();
 		int rent = this.getVehicle().getRent(); // get the rent
 		int noOfDays = this.getNoDays(); // get the number of days

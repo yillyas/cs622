@@ -2,7 +2,9 @@ package carRent;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 
 public class Vehicle {
@@ -22,6 +24,7 @@ public class Vehicle {
 	//private LinkedList<Booking> bookingHistory = new LinkedList<Booking>();
 	private HashMap<String, Booking> bookingHistory = new HashMap<String, Booking>();
 	private LinkedList<Account> rentHistory = new LinkedList<Account>();
+	private Set<LocalDate> currentBookingDates = new HashSet<>();
 	
 	public Vehicle(Owner owner, String make, int year, String model, 
 						InsurancePlan insurancePlan, int rent, int zipCode) {
@@ -166,6 +169,14 @@ public class Vehicle {
 	}
 	
 	
+	public Set<LocalDate> getCurrentBookingDates() {
+		return currentBookingDates;
+	}
+
+	public void setCurrentBookingDates(Set<LocalDate> currentBookingDates) {
+		this.currentBookingDates = currentBookingDates;
+	}
+
 	/*
 	 * Helper method to print the rent history
 	 */

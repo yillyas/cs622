@@ -149,7 +149,7 @@ public class Renter extends Account /*implements Comparable<Renter>*/ {
 	
 	@Override
 	public double addBalanceFromCoupon(double voucher) {
-		return this.totalBalance += voucher; 
+		return this.totalBalance -= voucher; // the balance shows what user owes, so the coupon should reduce the balance in this case
 	}
 
 	/*

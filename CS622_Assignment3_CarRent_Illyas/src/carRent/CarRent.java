@@ -66,7 +66,7 @@ public class CarRent {
 			}else if (selection == 7) { // open a claim
 				createClaim();
 			}else if (selection == 8) { // User of the month
-				userOftheMonth(accounts.values());
+				userOftheMonth(accounts.values()); // list of current accounts
 			}else if (selection == 9) {
 				System.exit(0);
 			}
@@ -87,7 +87,7 @@ public class CarRent {
 		System.out.println("User of the month is: " + currentWinnerAccout);
 		System.out.println("Current Balance: " + currentWinnerAccout.getBalance());
 		System.out.println("A  coupon of value:  " + COUPON + " is deposited to your account.");
-		currentWinnerAccout.addBalanceFromCoupon(COUPON);
+		currentWinnerAccout.addBalanceFromCoupon(COUPON); // apply the coupon to winner balance
 		System.out.println("New Balance: " + currentWinnerAccout.getBalance());
 		
 		return currentWinnerAccout;
