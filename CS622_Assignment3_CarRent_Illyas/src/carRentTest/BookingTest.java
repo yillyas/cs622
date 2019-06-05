@@ -10,7 +10,6 @@ import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import carRent.Account;
 import carRent.BasicPlan;
 import carRent.Booking;
 import carRent.InsurancePlan;

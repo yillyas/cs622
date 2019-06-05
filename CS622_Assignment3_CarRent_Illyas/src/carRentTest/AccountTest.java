@@ -2,11 +2,8 @@ package carRentTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +57,6 @@ class AccountTest {
 	
 	@Test
 	void testVehiclesRentedInPastMonth() {
-		
 		Booking booking1 = Booking.book(vehicle, owner, renter, "05/16/2019", "05/18/2019");
 		vehicle.addBookingHistory(booking1.getStartDate(), booking1);
 		renter.updateUserRentHistory(vehicle);

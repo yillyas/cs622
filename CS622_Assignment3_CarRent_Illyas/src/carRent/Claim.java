@@ -20,6 +20,30 @@ public class Claim <A extends Account, B extends Booking>{
 	}
 	
 	
+	public int getClaimID() {
+		return claimID;
+	}
+
+	public boolean isResloved() {
+		return resloved;
+	}
+
+	public B getBooking() {
+		return booking;
+	}
+
+	public A getAccount() {
+		return account;
+	}
+	
+	public double getClaimedAmount() {
+		return claimedAmount;
+	}
+
+	public void setClaimedAmount(double claimedAmount) {
+		this.claimedAmount = claimedAmount;
+	}
+
 	public void updateBalance(double claimedAmount) {
 		A account = this.account;
 		this.claimedAmount = claimedAmount;  // update the claim information with claim amount
@@ -66,6 +90,7 @@ public class Claim <A extends Account, B extends Booking>{
 			
 		}	
 	}
+
 }
 
 
