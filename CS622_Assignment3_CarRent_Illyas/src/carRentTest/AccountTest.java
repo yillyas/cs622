@@ -60,8 +60,15 @@ class AccountTest {
 		Booking booking1 = Booking.book(vehicle, owner, renter, "05/16/2019", "05/18/2019");
 		vehicle.addBookingHistory(booking1.getStartDate(), booking1);
 		renter.updateUserRentHistory(vehicle);
+		
+		
+		Vehicle vehicle2 = new Vehicle(owner, "Audi", 2015, "A4", insurance, 70, 20815);
+		Booking booking2 = Booking.book(vehicle2, owner, renter, "05/22/2019", "05/24/2019");
+		vehicle2.addBookingHistory(booking2.getStartDate(), booking2);
+		renter.updateUserRentHistory(vehicle2);
+		
 		LinkedList<Vehicle> pastMonthRentals = renter.vehiclesRentedInPastMonth();
-		assertEquals(1,pastMonthRentals.size());
+		assertEquals(2,pastMonthRentals.size());
 	}
 	
 
