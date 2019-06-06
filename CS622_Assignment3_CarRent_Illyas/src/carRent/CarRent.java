@@ -81,7 +81,7 @@ public class CarRent {
 	 * This generic method determines the user of the month based on past months Application usage
 	 * Winner gets a monthly coupon, which is applied to the account balance.
 	 */
-	public <T extends Account> T userOftheMonth(Collection<? extends T> aAccount) { // cast the input to a collection
+	public static <T extends Account> T userOftheMonth(Collection<? extends T> aAccount) { // cast the input to a collection
 		T currentWinnerAccount = Collections.max(aAccount);
 		
 		System.out.println("User of the month is: " + currentWinnerAccount);
