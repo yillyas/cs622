@@ -3,7 +3,6 @@ package carRentTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +60,7 @@ class AccountTest {
 		Renter renter1 = new Renter("Smith", "MD", "Rockville", 20851);
 		Booking booking1 = Booking.book(vehicle1, owner, renter1, "05/16/2019", "05/18/2019");
 		vehicle1.addBookingHistory(booking1.getStartDate(), booking1);
-		renter1.updateUserRentHistory(vehicle1);		
+		renter1.addToUserRentHistory(vehicle1);		
 		
 		Booking booking2 = Booking.book(vehicle1, owner, renter1, "05/19/2019", "05/21/2019");
 		vehicle1.addBookingHistory(booking2.getStartDate(), booking2);
@@ -77,8 +76,8 @@ class AccountTest {
 	
 	@Test
 	void testShowBookingInformation () {
-		Booking bookingInfo1 = owner.showBookingInformation(5);
-		Booking bookingInfo2 = renter.showBookingInformation(5);
+		Booking bookingInfo1 = Account.showBookingInformation(5);
+		Booking bookingInfo2 = Account.showBookingInformation(5);
 		assertEquals(bookingInfo1.getBookingID(),bookingInfo2.getBookingID());
 	}
 	

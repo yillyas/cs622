@@ -44,7 +44,8 @@ public class MainUI extends Application {
 	private static HashMap<Integer, Account> accounts = new HashMap<Integer, Account>();
 	//private Account account;
 	private Account owner;
-    int zipCode;
+ //   int zipCode;
+	private int bookingID;
 	
 	
 	public void start(Stage stage) {
@@ -54,10 +55,6 @@ public class MainUI extends Application {
         HBox hbox = addHBox();
         border.setTop(hbox);
         border.setLeft(addVBox());
-      //  border.setBottom(addHBox());
-       // border.setRight(addVBox());
-       // border.setCenter(addVBox());
-        
         Scene scene = new Scene(border);
         stage.setScene(scene);
         stage.setTitle("Welcome to RentMyCar");
@@ -161,14 +158,24 @@ public class MainUI extends Application {
 					listForRentForm();
 				}
         		});
-        Hyperlink bookkVehicleLink = new Hyperlink("Book Vehicle");
-        VBox.setMargin(bookkVehicleLink, new Insets(0, 0, 0, 8));
-        vbox.getChildren().add(bookkVehicleLink);
-        bookkVehicleLink.setOnAction(new EventHandler<ActionEvent>()
+        Hyperlink bookVehicleLink = new Hyperlink("Book Vehicle");
+        VBox.setMargin(bookVehicleLink, new Insets(0, 0, 0, 8));
+        vbox.getChildren().add(bookVehicleLink);
+        bookVehicleLink.setOnAction(new EventHandler<ActionEvent>()
         		{
 				@Override
 				public void handle(ActionEvent event) {
 					bookVehicleMenu();
+				}
+        		});
+        Hyperlink cancelBookingLink = new Hyperlink("Cancel Booking");
+        VBox.setMargin(cancelBookingLink, new Insets(0, 0, 0, 8));
+        vbox.getChildren().add(cancelBookingLink);
+        cancelBookingLink.setOnAction(new EventHandler<ActionEvent>()
+        		{
+				@Override
+				public void handle(ActionEvent event) {
+					cancelBookingMenu();
 				}
         		});
         Hyperlink fileClaimLink = new Hyperlink("File Claim");
@@ -354,7 +361,7 @@ public class MainUI extends Application {
         });
         
         TableColumn endDateCol = new TableColumn("Bkng EndDate");
-        endDateCol.setCellValueFactory(new PropertyValueFactory("bkEndDate"));
+        endDateCol.setCellValueFactory(new PropertyValueFactory("bkngEndDate"));
         endDateCol.setCellFactory(TextFieldTableCell.forTableColumn());
         
         endDateCol.setOnEditCommit(new EventHandler<CellEditEvent>() {
@@ -411,7 +418,7 @@ public class MainUI extends Application {
 					System.out.println("ID not found, please try again.");
 					outputLabel.setText("ID not found, please try again.");
 				}
-				zipCode = Integer.parseInt(searchField.getText());
+				int zipCode = Integer.parseInt(searchField.getText());
 				System.out.println(zipCode);
 				LinkedList<Vehicle> vehiclesByZip = Account.searchVehicle(zipCode);
 				ObservableList<Vehicle> data = FXCollections.observableList(vehiclesByZip);
@@ -460,6 +467,148 @@ public class MainUI extends Application {
     		
     }
 
+    public void cancelBookingMenu() {
+    		Stage stage = new Stage();
+		stage.setTitle("Cancel Booking");
+		Label label = new Label("Cancel Booking");
+        label.setTextFill(Color.DARKBLUE);
+        label.setFont(Font.font("Calibri", FontWeight.BOLD, 36));
+        HBox hb = new HBox();
+        hb.setAlignment(Pos.CENTER);
+        hb.getChildren().add(label);
+        
+		// Table view, data, columns and properties
+
+        @SuppressWarnings("rawtypes")
+		TableView table = new TableView();
+       // ObservableList data = getInitialTableData();
+       // table.setItems(data);
+        table.setEditable(true);
+        	
+        TableColumn ownerCol = new TableColumn("Vehicle ID");
+        ownerCol.setCellValueFactory(new PropertyValueFactory("vehicleID"));
+        TableColumn makeCol = new TableColumn("Make");
+        makeCol.setCellValueFactory(new PropertyValueFactory("make"));
+        TableColumn modelCol = new TableColumn("Model");
+        modelCol.setCellValueFactory(new PropertyValueFactory("model"));
+        TableColumn rentCol = new TableColumn("Rent");
+        rentCol.setCellValueFactory(new PropertyValueFactory("rent"));
+        TableColumn startDateCol = new TableColumn("Bkng StartDate");
+        startDateCol.setCellValueFactory(new PropertyValueFactory("bkngStartDate"));
+        startDateCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        startDateCol.setOnEditCommit(new EventHandler<CellEditEvent>() {
+            @Override
+            public void handle(CellEditEvent t) {
+            		Vehicle vehicle = (Vehicle) t.getTableView().getItems().get(t.getTablePosition().getRow());
+                ((Vehicle) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())
+                ).setBkngStartDate((String)t.getNewValue());
+                System.out.println(vehicle.getBkngStartDate());
+            }
+        });
+        
+        TableColumn endDateCol = new TableColumn("Bkng EndDate");
+        endDateCol.setCellValueFactory(new PropertyValueFactory("bkngEndDate"));
+        endDateCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        
+        endDateCol.setOnEditCommit(new EventHandler<CellEditEvent>() {
+            @Override
+            public void handle(CellEditEvent t) {
+            		Vehicle vehicle = (Vehicle) t.getTableView().getItems().get(t.getTablePosition().getRow());
+                ((Vehicle) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())
+                ).setBkngEndDate((String)t.getNewValue());
+                System.out.println(vehicle.getBkngEndDate());
+            }
+        });
+        
+        
+        table.getColumns().setAll(ownerCol, makeCol, modelCol, rentCol, startDateCol, endDateCol);
+        table.setPrefWidth(600);
+        table.setPrefHeight(500);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        
+     // add a label to show output
+        Label outputLabel = new Label();
+        HBox labelHb = new HBox(10);
+        labelHb.setAlignment(Pos.CENTER);
+        labelHb.getChildren().add(outputLabel);
+        
+     // Add id field
+        //Label renterIDLabel = new Label("Renter ID : ");
+        //renterIDLabel.setPrefWidth(20);
+        TextField bookingIDField = new TextField();
+        bookingIDField.setPromptText("Booking ID");
+        bookingIDField.setPrefWidth(90);
+        
+        Button searchBtn = new Button("Search");
+        searchBtn.setPrefWidth(90);
+       
+        HBox searchHb = new HBox();
+        searchHb.setAlignment(Pos.CENTER);
+        searchHb.getChildren().addAll( bookingIDField, searchBtn);
+        searchHb.setSpacing(10);
+        
+        searchBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void handle(ActionEvent event) {
+				bookingID = Integer.parseInt(bookingIDField.getText());
+				Booking booking = Account.showBookingInformation(bookingID); // reading the object from the file
+				if (booking != null) {
+					Vehicle v = booking.getVehicle();
+					LinkedList<Vehicle> vehicle = new LinkedList<>();
+					vehicle.add(v);
+					ObservableList<Vehicle> data = FXCollections.observableList(vehicle);
+			        table.setItems(data);
+				} else {
+					System.out.println("Booking ID not found, please try again.");
+					outputLabel.setText("Booking ID not found, please try again.");
+				}
+			}
+        	
+        });
+        
+     // Add Book button
+        Button cancelBtn = new Button("Cancel");
+        HBox buttonHb = new HBox(10);
+        buttonHb.setAlignment(Pos.CENTER);
+        buttonHb.getChildren().add(cancelBtn);
+        
+        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				
+				//Vehicle vehicle = (Vehicle) table.getSelectionModel().getSelectedItem();
+				Booking booking = Account.showBookingInformation(bookingID); // reading the object from the file
+				System.out.println(booking);
+				if (booking != null) {
+					Account.cancelBooking(booking);
+					System.out.println("Booking is cancled.");
+					outputLabel.setText("Booking is cancled and your account balance is updated");
+				} else {
+					System.out.println("Booking ID not found, please try again.");
+					outputLabel.setText("Booking ID not found, please try again.");
+				}
+			}
+        });
+        
+        // Status message text
+       Text actionStatus = new Text();
+        actionStatus.setFill(Color.FIREBRICK);
+ 
+        // Vbox
+        VBox vbox = new VBox(20);
+        vbox.setPadding(new Insets(25, 25, 25, 25));;
+        vbox.getChildren().addAll(hb,searchHb, table,buttonHb, labelHb, actionStatus);
+ 
+        // Scene
+        Scene scene = new Scene(vbox, 700, 550); // w x h
+        stage.setScene(scene);
+        stage.show();
+    }
+    
     public void addVehicleForm() {
 		Stage stage = new Stage();
 		GridPane gridPane = createRegistrationFormPane();
@@ -916,10 +1065,7 @@ public class MainUI extends Application {
 		TableView table = new TableView();
    //     table.setEditable(true);
         	
-        TableColumn accountIDCol = new TableColumn("Account ID");
-        accountIDCol.setCellValueFactory(new PropertyValueFactory("ID"));
-        TableColumn balanceCol = new TableColumn("Balance");
-        balanceCol.setCellValueFactory(new PropertyValueFactory("totalBalance"));
+        
         TableColumn nameCol = new TableColumn("Name");
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         TableColumn stateCol = new TableColumn("State");
@@ -929,7 +1075,7 @@ public class MainUI extends Application {
         TableColumn zipCol = new TableColumn("Zip Code");
         zipCol.setCellValueFactory(new PropertyValueFactory("zipCode"));
         
-        table.getColumns().setAll(accountIDCol,balanceCol, nameCol, stateCol, cityCol, zipCol);
+        table.getColumns().setAll(nameCol, stateCol, cityCol, zipCol);
         table.setPrefWidth(500);
         table.setPrefHeight(400);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -961,11 +1107,6 @@ public class MainUI extends Application {
 				Account account = accounts.get(accountID);
 				if (account != null) {
 					List<Account> list = new ArrayList<>();
-					/*
-					if (account instanceof Renter) {
-						list.add((Renter)account);
-					}
-					*/
 					list.add(account);
 					System.out.println(account);
 					ObservableList<Account> data = FXCollections.observableList(list);

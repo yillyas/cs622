@@ -1,11 +1,13 @@
 package carRent;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Renter extends Account {
 	private int ID;
 	private double totalBalance;
+	private double cupon;
 	private String name;
 	private String state;
 	private String city;
@@ -81,15 +83,27 @@ public class Renter extends Account {
 		}
 	}
 	
+	public void removeRentalChangers(int bookingID) {
+		if (this.balancePerBooking != null) { 
+			balancePerBooking.remove(bookingID);	// remove the booking from user account
+		}
+	}
+	
 	/**
 	 * @param vehicle
 	 * updates user rent history by adding the vehicle to a list of vehicles rented by user
 	 */
-	public void updateUserRentHistory(Vehicle vehicle) { 
+	public void addToUserRentHistory(Vehicle vehicle) { 
 		if (this.vehiclesRented == null) {
 			vehiclesRented = new LinkedList<Vehicle>(); 
 		}
 		vehiclesRented.add(vehicle);
+	}
+	
+	public void removeFromUserRentHistory(Vehicle vehicle) {
+		if (this.vehiclesRented != null) {
+			vehiclesRented.remove(vehicle);
+		}
 	}
 	
 	/**
@@ -102,13 +116,19 @@ public class Renter extends Account {
 		if (this.balancePerBooking == null) { // initialize the HashMap if it's empty.
 			balancePerBooking = new HashMap<Integer,Double>();
 		}
-		totalBalance += charges; // renter owes this money.
 		balancePerBooking.put(bookingID, charges);
 	}
 	
 	@Override
 	public double getBalance() {
-		return totalBalance;
+		double balance = cupon;
+		if (balancePerBooking != null) {
+		Collection<Double> chargerPerBooking = balancePerBooking.values();
+			for (double b : chargerPerBooking) {
+				balance += b; 
+			}
+		}
+		return balance;
 	}
 	/**
 	 * @return vehicles
@@ -120,13 +140,13 @@ public class Renter extends Account {
 	}
 	
 	@Override
-	public double addBalanceFromCoupon(double voucher) {
-		return this.totalBalance -= voucher; // the balance shows what user owes, so the coupon should reduce the balance in this case
+	public double addVoucher(double voucher) {
+		return this.cupon -= voucher; // the balance shows what user owes, so the coupon should reduce the balance in this case
 	}
 
 	@Override
 	public String toString() {
-		return "Renter [ID=" + ID + ", totalBalance=" + totalBalance + ", name=" + name + ", state=" + state + ", city="
+		return "Renter [ID=" + ID + ", totalBalance=" + this.getBalance() + ", name=" + name + ", state=" + state + ", city="
 				+ city + ", zipCode=" + zipCode + "]";
 	}
 
