@@ -101,12 +101,7 @@ public class Booking implements Serializable {
 			Period period = Period.between(currentTripStratDate , currentTripEndDate);
 			int days = period.getDays();
 			bookingDetail.setNoDays(days);
-			/*
-			Set<LocalDate> rangeOfBookingDates = new HashSet<>(Stream.iterate(currentTripStratDate, d -> d.plusDays(1))
-					  										.limit(days + 1)
-					  										.collect(Collectors.toList()));
-			*/
-			Set<LocalDate> rangeOfBookingDates = bookingDetail.bookingDateRange(startDate,endDate);
+			Set<LocalDate> rangeOfBookingDates = bookingDetail.bookingDateRange(startDate,endDate); 
 			vehicle.setCurrentBookingDates(rangeOfBookingDates); 
 			
 		}else {
@@ -116,7 +111,14 @@ public class Booking implements Serializable {
 		return bookingDetail;
 	}
 	
-	public Set<LocalDate> bookingDateRange (String startDate, String endDate) {
+	/**
+	 * @param startDate
+	 * @param endDate
+	 * @return bookingDateRange
+	 * 
+	 * Helper method to get a range of dates between two dates
+	 */
+	private Set<LocalDate> bookingDateRange (String startDate, String endDate) {
 		LocalDate currentTripStratDate = LocalDate.parse(startDate,DateTimeFormatter.ofPattern("MM/dd/yyyy")); // convert string to date
 		LocalDate currentTripEndDate = LocalDate.parse(endDate,DateTimeFormatter.ofPattern("MM/dd/yyyy"));
 		Period period = Period.between(currentTripStratDate , currentTripEndDate);

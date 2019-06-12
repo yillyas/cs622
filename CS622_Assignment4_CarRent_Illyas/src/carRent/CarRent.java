@@ -87,7 +87,7 @@ public class CarRent {
 		System.out.println("User of the month is: " + currentWinnerAccount);
 		System.out.println("Current Balance: " + currentWinnerAccount.getBalance());
 		System.out.println("A  coupon of value:  " + COUPON + " is deposited to your account.");
-		currentWinnerAccount.addBalanceFromCoupon(COUPON); // apply the coupon to winner balance
+		currentWinnerAccount.addVoucher(COUPON); // apply the coupon to winner balance
 		System.out.println("New Balance: " + currentWinnerAccount.getBalance());
 		
 		return currentWinnerAccount;

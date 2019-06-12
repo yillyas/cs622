@@ -68,14 +68,33 @@ public abstract class Account implements Comparable<Account>, Serializable {
 			owner.storeBookingInformation(booking);          // Save booking object
 			
 			vehicle.addBookingHistory(booking.getStartDate(), booking);            // update vehicle booking history
-			((Owner)owner).updateUserRentHistory(vehicle); 	// update user rent history
-			((Renter)renter).updateUserRentHistory(vehicle);
+			((Owner)owner).addToUserRentHistory(vehicle);	// update user rent history
+			((Renter)renter).addToUserRentHistory(vehicle);
+			vehicle.setBooked(true);
 			
 		} else {
 			throw new IncorrectAccountException("Incorrent account type");
 		}
 		return booking;
 		
+	}
+	
+	/** 
+	 * @param booking
+	 * @return renterBalance
+	 * 
+	 * Cancels an exiting booking and updates the account balance
+	 */
+	
+	public static double cancelBooking(Booking booking) {
+		booking.getOwner().removeRentalChangers(booking.getBookingID());
+		System.out.println("Updated the Owner Account balance.");
+		booking.getRenter().removeRentalChangers(booking.getBookingID());
+		System.out.println("Updated the Renter Account balance.");
+		booking.getOwner().removeFromUserRentHistory(booking.getVehicle());
+		booking.getRenter().removeFromUserRentHistory(booking.getVehicle());
+		booking.getVehicle().setBooked(false);
+		return booking.getRenter().getBalance();  // return the updated renter balance
 	}
 	
 	/**
@@ -100,7 +119,7 @@ public abstract class Account implements Comparable<Account>, Serializable {
 	 * @param BookingID
 	 * Get the Booking information from a binary file
 	 */
-	public Booking showBookingInformation(int bookingID) {
+	public static Booking showBookingInformation(int bookingID) {
 		Booking bookingDetail = null;
 		try {
 			HashMap<Integer, Booking> bookingInfo = new HashMap<>();
@@ -202,5 +221,5 @@ public abstract class Account implements Comparable<Account>, Serializable {
 	public abstract LinkedList<Vehicle> getUserRentHistory();
 	public abstract void addRentalChangers(int bookingID, Double charges);
 	public abstract double getBalance();
-	public abstract double addBalanceFromCoupon(double voucher);
+	public abstract double addVoucher(double voucher);
 }

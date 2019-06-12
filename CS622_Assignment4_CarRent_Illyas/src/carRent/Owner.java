@@ -2,12 +2,14 @@ package carRent;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Owner extends Account {
 	private int ID;
 	private double totalBalance;
+	private double cupon;
 	private String name;
 	private String state;
 	private String city;
@@ -89,6 +91,12 @@ public class Owner extends Account {
 		}
 	}
 	
+	public void removeRentalChangers(int bookingID) {
+		if (this.balancePerBooking != null) { 
+			balancePerBooking.remove(bookingID);	// remove the booking from user account
+		}
+	}
+	
 	public Vehicle getVehicleByID(int id) {
 		return vehiclesOwned.get(id);
 	}
@@ -136,16 +144,29 @@ public class Owner extends Account {
 	 * @param vehicle
 	 * updates user rent history by adding the vehicle to a list of vehicles rented by user
 	 */
-	public void updateUserRentHistory(Vehicle vehicle) {
+	public void addToUserRentHistory(Vehicle vehicle) {
 		if (this.vehiclesRented == null) {
 			vehiclesRented = new LinkedList<Vehicle>(); 
 		}
 		vehiclesRented.add(vehicle);
 	}
 	
+	public void removeFromUserRentHistory(Vehicle vehicle) {
+		if (this.vehiclesRented != null) {
+			vehiclesRented.remove(vehicle);
+		}
+	}
+	
 	@Override
 	public double getBalance() {
-		return totalBalance;
+		double balance = cupon;
+		if (balancePerBooking != null) {
+		Collection<Double> chargerPerBooking = balancePerBooking.values();
+			for (double b : chargerPerBooking) {
+				balance += b; 
+			}
+		}
+		return balance;
 	}
 	/**
 	 * @return vehicles
@@ -179,18 +200,17 @@ public class Owner extends Account {
 		if (this.balancePerBooking == null) { // initialize the HashMap if it's empty.
 			balancePerBooking = new HashMap<Integer,Double>();
 		}
-		totalBalance += charges; // add the current rental charges to total balance
 		balancePerBooking.put(bookingID, charges);
 	}
 	
 	@Override
 	public String toString() {
-		return "Owner [ID=" + ID + ", name=" + name + ", state=" + state + ", city=" + city + ", zipCode=" + zipCode
-				+ /* ", vehiclesOwned=" + vehiclesOwned + */ "]";
+		return "Owner [ID=" + ID + ", totalBalance=" + this.getBalance() + ", name=" + name + ", state=" + state + ", city="
+				+ city + ", zipCode=" + zipCode + "]";
 	}
 
 	@Override
-	public double addBalanceFromCoupon(double voucher) {
-		return this.totalBalance += voucher; 
+	public double addVoucher(double voucher) {
+		return this.cupon += voucher; 
 	}
 }
