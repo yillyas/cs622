@@ -15,16 +15,21 @@ import carRent.Renter;
 import carRent.Vehicle;
 
 public class Database {
-	//private static Statement stmt;
 	private final static String ACCOUNTTABLE = "accounts";
 	private final static String VEHICLETABLE = "vehicles";
 	private final static String BOOKINGTABLE = "bookings";
-	private final static String accountDDL = "CREATE TABLE accounts (id int PRIMARY KEY, balance DECIMAL(5, 2), name varchar(200), state varchar(100), city varchar(100), zipcode int)";
-	private final static String vehicleDDL = "CREATE TABLE vehicles (vehicleID int PRIMARY KEY, ownerID int, insurancePlanID int, make varchar(200), model varchar(200), vehicleYear int, rent int, "
-											+ "lstngStartDate varchar(200), lstngEndDate varchar(200), bkngStartDate varchar(200), "
-											+ "bkngEndDate varchar(200), isBooked BOOLEAN, isListed BOOLEAN, zipcode int)";
+	
+	private final static String accountDDL = "CREATE TABLE accounts (id int PRIMARY KEY, balance DECIMAL(5, 2), "
+																	+ "name varchar(200), state varchar(100), city varchar(100), zipcode int)";
+	
+	private final static String vehicleDDL = "CREATE TABLE vehicles (vehicleID int PRIMARY KEY, ownerID int, "
+													+ "insurancePlanID int, make varchar(200), model varchar(200), vehicleYear int, rent int, "
+													+ "lstngStartDate varchar(200), lstngEndDate varchar(200), bkngStartDate varchar(200), "
+													+ "bkngEndDate varchar(200), isBooked BOOLEAN, isListed BOOLEAN, zipcode int)";
+	
 	private final static String bookingDDL = "CREATE TABLE bookings (bookingID int PRIMARY KEY, vehicleID int, ownerID int, renterID int, "
-												+ "startDate varchar(200), endDate varchar(200), noDays int)";
+																+ "startDate varchar(200), endDate varchar(200), noDays int)";
+	
 	public static void insertAccount(Account account)
     {
 		int id;
