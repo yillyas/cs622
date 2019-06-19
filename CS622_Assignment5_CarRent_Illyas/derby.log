@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Tue Jun 18 00:48:56 EDT 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-016b-68ea-a224-0000063ddf68 
-on database directory /Users/yasirilyas/eclipse-workspace/CS622_Assignment5_CarRent_Illyas/derbyDB with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
+Tue Jun 18 20:40:32 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-016b-6d2d-95b2-0000072f1ba8 
+on database directory /Users/yasirilyas/git/cs622/CS622_Assignment5_CarRent_Illyas/derbyDB with class loader sun.misc.Launcher$AppClassLoader@5acf9800 
 Loaded from file:/Users/yasirilyas/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_162-b12
-user.dir=/Users/yasirilyas/eclipse-workspace/CS622_Assignment5_CarRent_Illyas
+user.dir=/Users/yasirilyas/git/cs622/CS622_Assignment5_CarRent_Illyas
 os.name=Mac OS X
 os.arch=x86_64
 os.version=10.13.6
