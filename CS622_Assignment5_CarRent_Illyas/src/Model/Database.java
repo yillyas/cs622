@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import carRent.Account;
@@ -18,7 +19,7 @@ public class Database {
 	private final static String ACCOUNTTABLE = "accounts";
 	private final static String VEHICLETABLE = "vehicles";
 	private final static String BOOKINGTABLE = "bookings";
-	
+	// REFERENCES accounts(id)
 	private final static String accountDDL = "CREATE TABLE accounts (id int PRIMARY KEY, balance DECIMAL(5, 2), "
 																	+ "name varchar(200), state varchar(100), city varchar(100), zipcode int)";
 	
@@ -27,7 +28,8 @@ public class Database {
 													+ "lstngStartDate varchar(200), lstngEndDate varchar(200), bkngStartDate varchar(200), "
 													+ "bkngEndDate varchar(200), isBooked BOOLEAN, isListed BOOLEAN, zipcode int)";
 	
-	private final static String bookingDDL = "CREATE TABLE bookings (bookingID int PRIMARY KEY, vehicleID int, ownerID int, renterID int, "
+	private final static String bookingDDL = "CREATE TABLE bookings (bookingID int PRIMARY KEY, vehicleID int, "
+																+ "ownerID int, renterID int, "
 																+ "startDate varchar(200), endDate varchar(200), noDays int)";
 	
 	public static void insertAccount(Account account)
@@ -325,6 +327,38 @@ public class Database {
 		return row;
     }
 
+	/*
+	
+	public static Map<String, Object> selectAllVehicle(int zipcode)
+    {
+		Map<String, Object> row = null;
+		try(Statement myStmt = ConnectionFactory.getConnectionToDerby().createStatement();
+        	ResultSet results = myStmt.executeQuery("SELECT * FROM " + VEHICLETABLE + " WHERE vehicleID =" + vehicleID);)
+        {
+            ResultSetMetaData rsmd = results.getMetaData();
+            int numberCols = rsmd.getColumnCount();
+           
+            while(results.next())
+            {
+            		row = new HashMap<String, Object>();
+            			for (int i = 1; i <= numberCols; i++) {
+            				row.put(rsmd.getColumnName(i), results.getObject(i));
+                }
+            }
+            
+            if (row != null) {
+            		System.out.println(row.keySet());
+            		System.out.println("\n---------------------------------------------------------------------------------------------");
+            		System.out.println(row.values());
+            }
+        }
+        catch (SQLException sqlExcept)
+        {
+            sqlExcept.printStackTrace();
+        }
+		return row;
+    }
+	*/
 	public static Map<String, Object> selectBooking(int bookingID)
     {
 		Map<String, Object> row = null;
@@ -355,6 +389,56 @@ public class Database {
 		return row;
     }
 	
+	
+	
+	public static Map<Integer, LinkedList<Object>> selectBookingByOwnerID(int accountID)
+    {
+		Map<Integer, LinkedList<Object>> rows = new HashMap<Integer, LinkedList<Object>>();
+		String query = "SELECT * FROM " + BOOKINGTABLE + " WHERE bookings.accountID = 1" ;
+		System.out.println(query);
+		try(Statement myStmt = ConnectionFactory.getConnectionToDerby().createStatement();
+        	ResultSet results = myStmt.executeQuery("SELECT * FROM " + BOOKINGTABLE + " WHERE ownerID = " + accountID + " ORDER BY startDate DESC");)  
+		{
+            ResultSetMetaData rsmd = results.getMetaData();
+            int numberCols = rsmd.getColumnCount();
+            for (int i=1; i<=numberCols; i++)
+            {
+                //print Column Names
+                System.out.print(rsmd.getColumnLabel(i)+"\t\t");  
+            }
+
+            System.out.println("\n-------------------------------------------------");
+            int rowNo = 1;
+            while(results.next())
+            {
+            		LinkedList<Object> currentRow = new LinkedList<>();
+            		int vehicleId = results.getInt(1);
+            		int ownerId = results.getInt(2);
+            		int renterId = results.getInt(3);
+                String startDate = results.getString(4);
+                String endDate = results.getString(5);
+                String noDays = results.getString(6);
+                currentRow.add(vehicleId);
+                currentRow.add(ownerId);
+                currentRow.add(startDate);
+                currentRow.add(endDate);
+                currentRow.add(noDays);
+                System.out.println(vehicleId + "\t\t" + ownerId + "\t\t" + renterId + "\t\t" + startDate + "\t\t" + endDate + "\t\t" + noDays);
+                rows.put(rowNo, currentRow);
+                rowNo ++;
+            }
+            
+            System.out.println("Selected rows: " + rows.values().size());
+            
+        }
+        catch (SQLException sqlExcept)
+        {
+            sqlExcept.printStackTrace();
+        }
+		return rows;
+    }
+	
+	
 	public static void init() {
     	// We create a table...
 	String [] tableDDL = new String[3];
@@ -366,24 +450,15 @@ public class Database {
 	for (int i=0; i< tableDDL.length; i++) {
 	    	try(Statement myStmt = ConnectionFactory.getConnectionToDerby().createStatement())
 	        {
-	    		myStmt.execute("DROP TABLE " + table[i]);
+	    		myStmt.execute("DROP TABLE " + table[i]); 
 	    		myStmt.execute(tableDDL[i]);
 	    		System.out.println("Created table:  " + table[i]);
-	    		
-	    		//  "(vehicleID int PRIMARY KEY, insurancePlanID int, make varchar(200), model varchar(200), vehicleYear int, rent int, lstngStartDate varchar(200), lstngEndDate varchar(200), bkngStartDate varchar(200), bkngEndDate varchar(200), isBooked BOOLEAN, isListed BOOLEAN, zipcode int)");
-	    	//	myStmt.execute(vehicleDDL);
-	    	//	System.out.println("Created table: " + VEHICLETABLE);
-	    		
-	    	//	myStmt.execute("CREATE TABLE " + BOOKINGTABLE +  "(bookingID int PRIMARY KEY, vehicleID int, ownerID int, renterID int, startDate varchar(200), endDate varchar(200), noDays int)");
-	    //		System.out.println("Created table: " + BOOKINGTABLE);
+
 	        }
 	    	catch (SQLException sqlExcept)
 	        {
 	    			if(tableAlreadyExists(sqlExcept) ) {
 	    				System.out.println("Table alread exists");
-	    			//	if (i< tableDDL.length ) {
-	    			//		continue;
-	    			//	}
 	    			} 
 	    			else {
 	    				sqlExcept.printStackTrace();
