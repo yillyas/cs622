@@ -19,7 +19,6 @@ public class Database {
 	private final static String ACCOUNTTABLE = "accounts";
 	private final static String VEHICLETABLE = "vehicles";
 	private final static String BOOKINGTABLE = "bookings";
-	// REFERENCES accounts(id)
 	private final static String accountDDL = "CREATE TABLE accounts (id int PRIMARY KEY, balance DECIMAL(5, 2), "
 																	+ "name varchar(200), state varchar(100), city varchar(100), zipcode int)";
 	
@@ -327,38 +326,7 @@ public class Database {
 		return row;
     }
 
-	/*
 	
-	public static Map<String, Object> selectAllVehicle(int zipcode)
-    {
-		Map<String, Object> row = null;
-		try(Statement myStmt = ConnectionFactory.getConnectionToDerby().createStatement();
-        	ResultSet results = myStmt.executeQuery("SELECT * FROM " + VEHICLETABLE + " WHERE vehicleID =" + vehicleID);)
-        {
-            ResultSetMetaData rsmd = results.getMetaData();
-            int numberCols = rsmd.getColumnCount();
-           
-            while(results.next())
-            {
-            		row = new HashMap<String, Object>();
-            			for (int i = 1; i <= numberCols; i++) {
-            				row.put(rsmd.getColumnName(i), results.getObject(i));
-                }
-            }
-            
-            if (row != null) {
-            		System.out.println(row.keySet());
-            		System.out.println("\n---------------------------------------------------------------------------------------------");
-            		System.out.println(row.values());
-            }
-        }
-        catch (SQLException sqlExcept)
-        {
-            sqlExcept.printStackTrace();
-        }
-		return row;
-    }
-	*/
 	public static Map<String, Object> selectBooking(int bookingID)
     {
 		Map<String, Object> row = null;
@@ -394,8 +362,6 @@ public class Database {
 	public static Map<Integer, LinkedList<Object>> selectBookingByOwnerID(int accountID)
     {
 		Map<Integer, LinkedList<Object>> rows = new HashMap<Integer, LinkedList<Object>>();
-		String query = "SELECT * FROM " + BOOKINGTABLE + " WHERE bookings.accountID = 1" ;
-		System.out.println(query);
 		try(Statement myStmt = ConnectionFactory.getConnectionToDerby().createStatement();
         	ResultSet results = myStmt.executeQuery("SELECT * FROM " + BOOKINGTABLE + " WHERE ownerID = " + accountID + " ORDER BY startDate DESC");)  
 		{
