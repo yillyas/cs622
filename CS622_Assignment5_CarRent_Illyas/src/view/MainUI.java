@@ -1,9 +1,6 @@
 package view;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import Model.Database;
+
 import carRent.Account;
 import carRent.BasicPlan;
 import carRent.Booking;
@@ -24,10 +22,10 @@ import carRent.Renter;
 import carRent.StandardPlan;
 import carRent.Vehicle;
 import carRent.VehicleRepository;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -59,13 +57,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class MainUI extends Application {
-	//private String loggedInUser; //for testing
 	private static HashMap<Integer, Account> accounts = new HashMap<Integer, Account>();
-	//private Account account;
 	private Account owner;
- //   int zipCode;
 	private int bookingID;
-	
 	
 	public void start(Stage stage) {
 		// Use a border pane as the root for scene
@@ -241,18 +235,13 @@ public class MainUI extends Application {
     }
     
     public void createUserForm() {
-    		Stage stage = new Stage();
-    		GridPane gridPane = createRegistrationFormPane();
-    		Scene scene = new Scene(gridPane, 500, 500);
-    		stage.setScene(scene);
-    	//	VBox box = new VBox();
-    		stage.setTitle("User Registration Form");
-    		/*
-    		box.setAlignment(Pos.CENTER);
-    		box.setPadding(new Insets(40, 40, 40, 40));
-    		*/
+	    		Stage stage = new Stage();
+	    		GridPane gridPane = createRegistrationFormPane();
+	    		Scene scene = new Scene(gridPane, 500, 500);
+	    		stage.setScene(scene);
+	    		stage.setTitle("User Registration Form");
     		
-    		// Add Header
+	    		// Add Header
             Label headerLabel = new Label("User Registration");
             headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
             gridPane.add(headerLabel, 0,0,2,1);
@@ -300,12 +289,12 @@ public class MainUI extends Application {
             Label accountTypeLabel = new Label("Account Type : ");
             gridPane.add(accountTypeLabel, 0, 5);
             
-         // create a toggle group 
+            // create a toggle group 
             ToggleGroup tg = new ToggleGroup();
-         // create radio buttons 
+            // create radio buttons 
             RadioButton r1 = new RadioButton("Owner");
             RadioButton r2 = new RadioButton("Renter");
-         // add radio buttons to toggle group 
+            // add radio buttons to toggle group 
             r1.setToggleGroup(tg); 
             r2.setToggleGroup(tg);
             HBox hbox = new HBox(r1, r2); // group the buttons on the UI
@@ -318,11 +307,7 @@ public class MainUI extends Application {
             gridPane.add(userInfoSubmit, 0, 6, 2, 1);
             GridPane.setHalignment(userInfoSubmit, HPos.CENTER);
             GridPane.setMargin(userInfoSubmit, new Insets(20, 0,20,0));
-         // Add Output Text Field
-         //   TextField outputField = new TextField();
             Label outputLabel = new Label();
-          //  outputField.setPrefHeight(40);
-          //  outputField.setPrefWidth(80);
             gridPane.add(outputLabel, 1, 7);
             userInfoSubmit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -345,7 +330,6 @@ public class MainUI extends Application {
 						outputLabel.setText("Thank you! " + name + " Your ID is: " + ((Renter)account).getId());
 					}
 					System.out.println(account);
-					//System.out.println(tg.getSelectedToggle().selectedProperty());
 				}
             });
     		stage.show();
@@ -363,10 +347,7 @@ public class MainUI extends Application {
         
 		// Table view, data, columns and properties
 
-        @SuppressWarnings("rawtypes")
-		TableView table = new TableView();
-       // ObservableList data = getInitialTableData();
-       // table.setItems(data);
+		TableView<Vehicle> table = new TableView<>();
         table.setEditable(true);
         	
         TableColumn ownerCol = new TableColumn("Vehicle ID");
@@ -412,21 +393,17 @@ public class MainUI extends Application {
         table.setPrefHeight(500);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
-     // add a label to show output
+        // add a label to show output
         Label outputLabel = new Label();
         HBox labelHb = new HBox(10);
         labelHb.setAlignment(Pos.CENTER);
         labelHb.getChildren().add(outputLabel);
         
-     // Add id field
-        //Label renterIDLabel = new Label("Renter ID : ");
-        //renterIDLabel.setPrefWidth(20);
+        // Add id field
         TextField renterIDField = new TextField();
         renterIDField.setPromptText("Renter ID");
         renterIDField.setPrefWidth(80);
         
-       // Label searchLabel = new Label("Zip : ");
-       // searchLabel.setPrefWidth(20);
         TextField searchField = new TextField();
         searchField.setPromptText("Zip Code");
         searchField.setPrefWidth(80);
@@ -458,7 +435,7 @@ public class MainUI extends Application {
         	
         });
         
-     // Add Book button
+        // Add Book button
         Button bookBtn = new Button("Book");
         HBox buttonHb = new HBox(10);
         buttonHb.setAlignment(Pos.CENTER);
@@ -468,7 +445,6 @@ public class MainUI extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				
 				Vehicle vehicle = (Vehicle) table.getSelectionModel().getSelectedItem();
 				System.out.println(vehicle);
 				try {
@@ -485,7 +461,7 @@ public class MainUI extends Application {
         });
         
         // Status message text
-       Text actionStatus = new Text();
+        Text actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
  
         // Vbox
@@ -512,12 +488,7 @@ public class MainUI extends Application {
         
 		// Table view, data, columns and properties
 
-        @SuppressWarnings("rawtypes")
-        //<String, Object>
 		TableView<BookingView> table = new TableView<>();
-		// TableView<ObservableMap.Entry<String, Object>>  table = new TableView();
-       // ObservableList data = getInitialTableData();
-       // table.setItems(data);
         table.setEditable(true);
         	
         TableColumn bkingIDCol = new TableColumn("Booking ID");
@@ -559,21 +530,18 @@ public class MainUI extends Application {
             }
         });
         
-        
         table.getColumns().setAll(bkingIDCol,vehicleIDCol, makeCol, modelCol, rentCol, startDateCol, endDateCol);
         table.setPrefWidth(600);
         table.setPrefHeight(500);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
-     // add a label to show output
+        // add a label to show output
         Label outputLabel = new Label();
         HBox labelHb = new HBox(10);
         labelHb.setAlignment(Pos.CENTER);
         labelHb.getChildren().add(outputLabel);
         
-     // Add id field
-        //Label renterIDLabel = new Label("Renter ID : ");
-        //renterIDLabel.setPrefWidth(20);
+        // Add id field
         TextField bookingIDField = new TextField();
         bookingIDField.setPromptText("Booking ID");
         bookingIDField.setPrefWidth(90);
@@ -587,13 +555,10 @@ public class MainUI extends Application {
         searchHb.setSpacing(10);
         
         searchBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void handle(ActionEvent event) {
 				bookingID = Integer.parseInt(bookingIDField.getText());
-			//	Booking booking = Account.showBookingInformation(bookingID); // reading the object from the file
 				Map<String, Object> bookingInfo = Database.selectBooking(bookingID); // read from database
-				//System.out.println("Searching the booking ID: " + bookingID + " in database.");
 				if (bookingInfo.size() != 0) {
 					int vehicleID = (int) bookingInfo.get("VEHICLEID");
 					String bkngStartDate = (String) bookingInfo.get("STARTDATE");
@@ -617,28 +582,20 @@ public class MainUI extends Application {
         	
         });
         
-     // Add Book button
+        // Add Book button
         Button updateBtn = new Button("Update");
         HBox buttonHb = new HBox(10);
         buttonHb.setAlignment(Pos.CENTER);
         buttonHb.getChildren().add(updateBtn);
-        
         updateBtn.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-				
-				//Vehicle vehicle = (Vehicle) table.getSelectionModel().getSelectedItem();
-			//	Booking booking = Account.showBookingInformation(bookingID); // reading the object from the file
 				BookingView booking = table.getSelectionModel().getSelectedItem();
 				System.out.println(booking);
 				if (booking != null) {
-					//Account.cancelBooking(booking);
 					Database.updateBooking(booking.getBookingID(), booking.getBkngStartDate(), booking.getBkngEndDate());; // update row in Database
 					System.out.println("Booking is updated.");
 					Database.selectBooking(booking.getBookingID());
-					
-					//System.out.println(Database.selectBooking(booking.getBookingID()));
 					outputLabel.setText("Updated Booking, Start Date: " + booking.getBkngStartDate() + " End Date: " + booking.getBkngEndDate());
 				} else {
 					System.out.println("Not able to update the database.");
@@ -648,7 +605,7 @@ public class MainUI extends Application {
         });
         
         // Status message text
-       Text actionStatus = new Text();
+        Text actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
  
         // Vbox
@@ -674,13 +631,7 @@ public class MainUI extends Application {
         hb.getChildren().add(label);
         
 		// Table view, data, columns and properties
-
-        @SuppressWarnings("rawtypes")
-        //<String, Object>
 		TableView<BookingView> table = new TableView<>();
-		// TableView<ObservableMap.Entry<String, Object>>  table = new TableView();
-       // ObservableList data = getInitialTableData();
-       // table.setItems(data);
         table.setEditable(true);
         	
         TableColumn bkingIDCol = new TableColumn("Booking ID");
@@ -722,21 +673,18 @@ public class MainUI extends Application {
             }
         });
         
-        
         table.getColumns().setAll(bkingIDCol,vehicleIDCol, makeCol, modelCol, rentCol, startDateCol, endDateCol);
         table.setPrefWidth(600);
         table.setPrefHeight(500);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
-     // add a label to show output
+        // add a label to show output
         Label outputLabel = new Label();
         HBox labelHb = new HBox(10);
         labelHb.setAlignment(Pos.CENTER);
         labelHb.getChildren().add(outputLabel);
         
-     // Add id field
-        //Label renterIDLabel = new Label("Renter ID : ");
-        //renterIDLabel.setPrefWidth(20);
+        // Add id field
         TextField bookingIDField = new TextField();
         bookingIDField.setPromptText("Booking ID");
         bookingIDField.setPrefWidth(90);
@@ -750,11 +698,9 @@ public class MainUI extends Application {
         searchHb.setSpacing(10);
         
         searchBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void handle(ActionEvent event) {
 				bookingID = Integer.parseInt(bookingIDField.getText());
-			//	Booking booking = Account.showBookingInformation(bookingID); // reading the object from the file
 				Map<String, Object> bookingInfo = Database.selectBooking(bookingID); // read from database
 				System.out.println("Searching the booking ID: " + bookingID + " in database.");
 				if (bookingInfo.size() != 0) {
@@ -780,19 +726,14 @@ public class MainUI extends Application {
 			}
         	
         });
-        
-     // Add Book button
+        // Add Book button
         Button cancelBtn = new Button("Cancel");
         HBox buttonHb = new HBox(10);
         buttonHb.setAlignment(Pos.CENTER);
         buttonHb.getChildren().add(cancelBtn);
-        
         cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-				
-				//Vehicle vehicle = (Vehicle) table.getSelectionModel().getSelectedItem();
 				Booking booking = Account.showBookingInformation(bookingID); // reading the object from the file
 				System.out.println(booking);
 				if (booking != null) {
@@ -808,7 +749,7 @@ public class MainUI extends Application {
         });
         
         // Status message text
-       Text actionStatus = new Text();
+        Text actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
  
         // Vbox
@@ -821,7 +762,7 @@ public class MainUI extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    
+   
     public void addVehicleForm() {
 		Stage stage = new Stage();
 		GridPane gridPane = createRegistrationFormPane();
@@ -842,8 +783,6 @@ public class MainUI extends Application {
         TextField ownerIDField = new TextField();
         ownerIDField.setPrefHeight(40);
         gridPane.add(ownerIDField, 1,1);
-
-
         // Add Make
         Label makeLabel = new Label("Make : ");
         gridPane.add(makeLabel, 0, 2);
@@ -851,7 +790,6 @@ public class MainUI extends Application {
         TextField makeField = new TextField();
         makeField.setPrefHeight(40);
         gridPane.add(makeField, 1, 2);
-        
         // Add Model
         Label modelLabel = new Label("Model : ");
         gridPane.add(modelLabel, 0, 3);
@@ -859,7 +797,6 @@ public class MainUI extends Application {
         TextField modelField = new TextField();
         modelField.setPrefHeight(40);
         gridPane.add(modelField, 1, 3);
-        
         // Add Year
         Label yearLabel = new Label("Year : ");
         gridPane.add(yearLabel, 0, 4);
@@ -867,7 +804,6 @@ public class MainUI extends Application {
         TextField yearField = new TextField();
         yearField.setPrefHeight(40);
         gridPane.add(yearField, 1, 4);
-        
         // Add Rent
         Label rentLabel = new Label("Rent : ");
         gridPane.add(rentLabel, 0, 5);
@@ -875,7 +811,6 @@ public class MainUI extends Application {
         TextField rentField = new TextField();
         rentField.setPrefHeight(40);
         gridPane.add(rentField, 1, 5);
-        
         // Add Zip 
         Label zipLabel = new Label("Zip : ");
         gridPane.add(zipLabel, 0, 6);
@@ -883,11 +818,9 @@ public class MainUI extends Application {
         TextField zipField = new TextField();
         zipField.setPrefHeight(40);
         gridPane.add(zipField, 1, 6);
-        
         // Select Insurance Plan
         Label insuranceTypeLabel = new Label("Insurance : ");
         gridPane.add(insuranceTypeLabel, 0, 7);
-        
         // create a toggle group 
         ToggleGroup tg = new ToggleGroup();
         // create radio buttons 
@@ -908,11 +841,8 @@ public class MainUI extends Application {
         gridPane.add(userInfoSubmit, 0, 8, 2, 1);
         GridPane.setHalignment(userInfoSubmit, HPos.CENTER);
         GridPane.setMargin(userInfoSubmit, new Insets(20, 0,20,0));
-     // Add Output Text Field
-     //   TextField outputField = new TextField();
+        // Add Output Text Field
         Label outputLabel = new Label();
-      //  outputField.setPrefHeight(40);
-      //  outputField.setPrefWidth(80);
         gridPane.add(outputLabel, 1, 9);
         userInfoSubmit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -942,7 +872,7 @@ public class MainUI extends Application {
 			}
         });
 		stage.show();
-}
+    	}
 
     public void listForRentForm() {
     		Stage stage = new Stage();
@@ -957,10 +887,7 @@ public class MainUI extends Application {
 		// Table view, data, columns and properties
 
         TableView table = new TableView();
-       // ObservableList data = getInitialTableData();
-       // table.setItems(data);
         table.setEditable(true);
-        
         	
         TableColumn idCol = new TableColumn("VehicleID");
         idCol.setCellValueFactory(new PropertyValueFactory("vehicleID"));
@@ -1000,8 +927,7 @@ public class MainUI extends Application {
         table.setPrefWidth(600);
         table.setPrefHeight(500);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        
-     // add a label to show output
+        // add a label to show output
         Label outputLabel = new Label();
         HBox labelHb = new HBox(10);
         labelHb.setAlignment(Pos.CENTER);
@@ -1018,9 +944,7 @@ public class MainUI extends Application {
         showHb.setAlignment(Pos.CENTER);
         showHb.getChildren().addAll(ownerIDField, showBtn);
         showHb.setSpacing(10);
-       // int ownerID;
         showBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void handle(ActionEvent event) {
 				int ownerID = Integer.parseInt(ownerIDField.getText());
@@ -1039,23 +963,18 @@ public class MainUI extends Application {
         	
         });
         
-     // Add list button
+        // Add list button
         Button listbtn = new Button("List");
         HBox buttonHb = new HBox(10);
         buttonHb.setAlignment(Pos.CENTER);
         buttonHb.getChildren().add(listbtn);
-        
         listbtn.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-				
 				Vehicle vehicle = (Vehicle) table.getSelectionModel().getSelectedItem();
-				//System.out.println(vehicle);
-				//boolean listed = false;
 				if (vehicle.getEndDate() != null && vehicle.getEndDate() != null) {
 					boolean listed = ((Owner)owner).listVehicleforRent(vehicle, vehicle.getStartDate(), vehicle.getEndDate());
-					Database.updateVehicle(vehicle); 
+					Database.updateVehicle(vehicle); // add vehicle to Database
 					System.out.println("Updated vehicle information in Database.");
 					if (listed) {
 						outputLabel.setText("Vehicle is Listed for Rent");
@@ -1071,7 +990,7 @@ public class MainUI extends Application {
         });
         
         // Status message text
-       Text actionStatus = new Text();
+        Text actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
  
         // Vbox
@@ -1116,13 +1035,13 @@ public class MainUI extends Application {
         table.setPrefHeight(300);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
-     // add a label to show output
+        // add a label to show output
         Label outputLabel = new Label();
         HBox labelHb = new HBox(10);
         labelHb.setAlignment(Pos.CENTER);
         labelHb.getChildren().add(outputLabel);
         
-     // Add id field
+        // Add id field
         TextField bookingIDField = new TextField();
         bookingIDField.setPromptText("Booking ID");
         bookingIDField.setPrefWidth(90);
@@ -1144,7 +1063,6 @@ public class MainUI extends Application {
         searchHb.setSpacing(10);
         
         fileBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void handle(ActionEvent event) {
 				List<Claim<Account, Booking>> list = new ArrayList<>();
@@ -1162,11 +1080,10 @@ public class MainUI extends Application {
 					outputLabel.setText(claim.getClaimedAmount() + " Is deposited to your Account, current balance : " + account.getBalance());
 				}
 			}
-        	
         });
         
         // Status message text
-       Text actionStatus = new Text();
+        Text actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
  
         // Vbox
@@ -1214,13 +1131,13 @@ public class MainUI extends Application {
         table.setPrefHeight(300);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
-     // add a label to show output
+        // add a label to show output
         Label outputLabel = new Label();
         HBox labelHb = new HBox(10);
         labelHb.setAlignment(Pos.CENTER);
         labelHb.getChildren().add(outputLabel);
         
-     // Add id field
+        // Add id field
         TextField accountIDField = new TextField();
         accountIDField.setPromptText("Account ID");
         accountIDField.setPrefWidth(90);
@@ -1251,7 +1168,7 @@ public class MainUI extends Application {
         });
         
         // Status message text
-       Text actionStatus = new Text();
+        Text actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
  
         // Vbox
@@ -1277,10 +1194,7 @@ public class MainUI extends Application {
         
 		// Table view, data, columns and properties
 
-       // @SuppressWarnings("rawtypes")
-		TableView table = new TableView();
-   //     table.setEditable(true);
-        	
+		TableView<Account> table = new TableView<>();
         
         TableColumn nameCol = new TableColumn("Name");
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
@@ -1296,13 +1210,13 @@ public class MainUI extends Application {
         table.setPrefHeight(400);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
-     // add a label to show output
+        // add a label to show output
         Label outputLabel = new Label();
         HBox labelHb = new HBox(10);
         labelHb.setAlignment(Pos.CENTER);
         labelHb.getChildren().add(outputLabel);
         
-     // Add id field
+        // Add id field
         TextField accountIDField = new TextField();
         accountIDField.setPromptText("Account ID");
         accountIDField.setPrefWidth(90);
@@ -1334,7 +1248,7 @@ public class MainUI extends Application {
         });
         
         // Status message text
-       Text actionStatus = new Text();
+        Text actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
  
         // Vbox
@@ -1379,56 +1293,9 @@ public class MainUI extends Application {
         return gridPane;
     }
    
-
     public static void main(String[] args) {
-    	
-    		/*
-	    	try(Statement myStmt = ConnectionFactory.getConnectionToDerby().createStatement())
-	        {
-	    		myStmt.execute("drop table " + tableName);
-	    		myStmt.execute("CREATE TABLE " + tableName +  "(id int PRIMARY KEY, name varchar(200), state varchar(100), city varchar(100), zipcode int)");
-	    		System.out.println("Created table " + tableName);
-	    		// load initial data
-	    		// myStmt.execute("insert into " + tableName + " values (" + id + ",'" + restName + "','" + cityName +"')");
-	    		String query = "INSERT INTO  owner(id, name, state, city, zipcode) VALUES"
-	    													+ "(1,'John Doe','MD', 'Bethesda', 20814)";
-	    				
-					//	+ "(2,'Jane Doe','MD', 'Rockville', 20851))";
-	    		
-	    		System.out.println(query);
-	    		
-	    		myStmt.execute(query);
-	    		System.out.println("Values inserted");
-	    		System.out.println("Selecting the velues");
-	    		//myStmt.execute("SELECT '*' FROM " + tableName);
-	    		int id = 1;
-	    		ResultSet results = myStmt.executeQuery("select * from " + tableName + " WHERE id =" +id);
-	    		ResultSetMetaData rsmd = results.getMetaData();
-	            int numberCols = rsmd.getColumnCount();
-	            for (int i=1; i<=numberCols; i++)
-	            {
-	                //print Column Names
-	                System.out.print(rsmd.getColumnLabel(i)+"\t\t");  
-	            }
-
-	            System.out.println("\n-----------------------------------------------------------------------");
-	            while(results.next())
-	            {
-	                int accountID = results.getInt(1);
-	                String name = results.getString(2);
-	                String state = results.getString(3);
-	                String city = results.getString(4);
-	                int zip = results.getInt(5);
-	                System.out.println(accountID + "\t\t" + name + "\t\t" + state + "\t\t" + city + "\t\t" + zip);
-	            }
-	    		
-	        }
-	    	catch (SQLException sqlExcept)
-	        {
-	            sqlExcept.printStackTrace();
-	        }
-	        */
-    	    Database.init();
+    	    
+    	    Database.init(); // Create Database Tables
 		launch(MainUI.class, args);
 	}
 }
