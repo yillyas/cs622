@@ -1441,7 +1441,6 @@ public class MainUI extends Application {
     }
    
     public static void main(String[] args) {
-    		///*
     	     Thread databaseSetup = new Database();
     	     databaseSetup.start(); // Create Database Tables in a separate thread
     		 try {
@@ -1450,7 +1449,6 @@ public class MainUI extends Application {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		//*/
 		launch(MainUI.class, args);
 	}
 }
